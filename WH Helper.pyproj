@@ -575,6 +575,11 @@
   <ItemGroup>
     <Content Include=".gitattributes" />
     <Content Include=".gitignore" />
+    <Content Include="apps\1.txt" />
+    <Content Include="apps\operations\1.txt" />
+    <Content Include="apps\products\1.txt" />
+    <Content Include="apps\reports\1.txt" />
+    <Content Include="apps\users\1.txt" />
     <Content Include="docker-compose.yml" />
     <Content Include="env\Lib\site-packages\pip-24.2.dist-info\AUTHORS.txt" />
     <Content Include="env\Lib\site-packages\pip-24.2.dist-info\entry_points.txt" />
@@ -1025,9 +1030,16 @@
     <Content Include="env\Scripts\pip3.exe" />
     <Content Include="env\Scripts\python.exe" />
     <Content Include="env\Scripts\pythonw.exe" />
+    <Content Include="media\1.txt" />
     <Content Include="README.md" />
     <Content Include="requirements.txt" />
+    <Content Include="scripts\1.txt" />
     <Content Include="setup.sh" />
+    <Content Include="static\1.txt" />
+    <Content Include="static\css\1.txt" />
+    <Content Include="static\images\1.txt" />
+    <Content Include="static\js\1.txt" />
+    <Content Include="templates\1.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in
