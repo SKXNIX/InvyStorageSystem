@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block title %}Просмотр данных - Система склада{% endblock %}
+
+{% block content %}
+<a href="{% url 'core:index' %}" style="text-decoration: none; color: #1E3A8A; font-weight: bold;">← Главная</a>
+
+<div style="margin-top: 1.5rem; display: flex; justify-content: space-between; align-items: center;">
+    <button class="button" style="padding: 0.5rem 1rem; font-size: 1rem;">+ Новый</button>
+
+    <div style="display: flex; align-items: center; gap: 0.5rem;">
+        <span style="font-size: 1.2rem;">🔍</span>
+        <input type="text" placeholder="Поиск..." style="padding: 0.5rem; border: 1px solid #D1D5DB; border-radius: 5px;">
+    </div>
+
+    <div style="font-size: 0.9rem;">
+        <a href="#" style="margin: 0 0.5rem;">«</a>
+        <a href="#" style="margin: 0 0.5rem;">1</a>
+        <a href="#" style="margin: 0 0.5rem;">2</a>
+        <a href="#" style="margin: 0 0.5rem;">3</a>
+        <a href="#" style="margin: 0 0.5rem;">»</a>
+    </div>
+</div>
+
+<table style="width: 100%; margin-top: 1rem; border-collapse: collapse; background-color: white; border: 1px solid #D1D5DB;">
+    <thead>
+        <tr style="background-color: #E5E7EB;">
+            {% for i in "12345678910"|make_list %}
+            <th style="padding: 0.5rem; border: 1px solid #D1D5DB;">column{{ i }}</th>
+            {% endfor %}
+        </tr>
+    </thead>
+    <tbody>
+        {% for row in data %}
+        <tr>
+            {% for col in row %}
+            <td style="padding: 0.5rem; border: 1px solid #D1D5DB;">{{ col }}</td>
+            {% endfor %}
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="10" style="text-align: center; padding: 1rem;">Нет данных для отображения</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
