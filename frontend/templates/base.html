@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Система управления складом: Учет и контроль товаров (Warehouse Helper){% endblock %}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #F3F4F6; /* Светло-серый фон */
+            min-height: 100vh; /* Минимальная высота для всего viewport */
+            display: flex;
+            flex-direction: column;
+        }
+        .header {
+            background-color: #1E3A8A; /* Тёмно-синий */
+            color: #FFFFFF;
+            padding: 1rem;
+            text-align: center;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 1.8rem;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 1rem;
+            background-color: #FFFFFF; /* Белый фон для контента */
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .button-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+        .button {
+            background-color: #1E3A8A; /* Тёмно-синий для кнопок */
+            color: #FFFFFF;
+            border: none;
+            padding: 2rem;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 1.2rem;
+            margin: 0;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        .button:hover {
+            background-color: #3B82F6; /* Светлый синий при наведении */
+        }
+        .user-info {
+            text-align: right;
+            padding: 0.5rem 1rem;
+            background-color: #E5E7EB; /* Светло-серый для user-info */
+        }
+        .user-info a {
+            color: #FFFFFF; /* Белый текст для ссылок */
+            background-color: #1E3A8A; /* Тёмно-синий фон для кнопки */
+            padding: 0.3rem 0.8rem;
+            border-radius: 5px;
+            text-decoration: none;
+            margin-left: 0.5rem;
+            transition: background-color 0.3s;
+        }
+        .user-info a:hover {
+            background-color: #3B82F6; /* Светлый синий при наведении */
+        }
+        .footer {
+            background-color: #E5E7EB;
+            color: #374151; /* Тёмно-серый текст */
+            text-align: center;
+            padding: 1rem;
+            width: 100%;
+            margin-top: auto; /* Футер прилипает к низу */
+        }
+        .login-form {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 0.5rem 1rem 1rem; /* Уменьшен верхний отступ */
+        }
+        .login-form h2 {
+            color: #374151; /* Тёмно-серый для заголовков */
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+        .login-form p {
+            margin: 0.5rem 0;
+        }
+        .login-form input {
+            width: 100%;
+            padding: 0.5rem;
+            margin: 0.25rem 0;
+            border: 1px solid #D1D5DB; /* Светло-серая граница */
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        .login-form input:focus {
+            outline: none;
+            border-color: #1E3A8A; /* Тёмно-синий при фокусе */
+            box-shadow: 0 0 0 2px rgba(30, 58, 138, 0.2);
+        }
+        .login-form .error input {
+            border-color: #EF4444; /* Красная граница для полей с ошибками */
+            box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.2);
+        }
+        .login-button {
+            background-color: #1E3A8A; /* Тёмно-синий для кнопки */
+            color: #FFFFFF;
+            padding: 0.5rem 1.5rem; /* Компактные отступы */
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s;
+            margin-top: 1rem; /* Отступ сверху */
+        }
+        .login-button:hover {
+            background-color: #3B82F6; /* Светлый синий при наведении */
+        }
+        .form-errors {
+            color: #EF4444; /* Красный для ошибок */
+            margin-bottom: 1rem;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+        /* Переопределение автозаполнения */
+        .login-form input:-webkit-autofill,
+        .login-form input:-webkit-autofill:hover,
+        .login-form input:-webkit-autofill:focus {
+            -webkit-box-shadow: 0 0 0 30px #F3F4F6 inset; /* Светло-серый фон */
+            -webkit-text-fill-color: #374151; /* Тёмно-серый текст */
+            border: 1px solid #D1D5DB;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="user-info">
+        {% if user.is_authenticated %}
+            Привет, {{ user.username }}! | <a href="{% url 'auth:logout' %}">Выйти</a>
+        {% else %}
+            <a href="{% url 'auth:login' %}">Войти</a>
+        {% endif %}
+    </div>
+    <div class="header">
+        <h1>Система управления складом: Учет и контроль товаров (Warehouse Helper)</h1>
+    </div>
+    <div class="container">
+        {% block content %}{% endblock %}
+    </div>
+    <div class="footer">
+        © 2025 Система управления складом: Учет и контроль товаров (Warehouse Helper). Все права защищены.
+    </div>
+</body>
+</html>
