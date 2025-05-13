@@ -1,1 +1,40 @@
+services:
+  db:
+    image: postgres:15
+    volumes:
+      - ./docker/db/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: warehouse_helper
 
+  django:
+    build:
+      context: .  # ROOT
+      dockerfile: docker/django/Dockerfile
+    volumes:
+      - .:/app  # deploy project in /app
+    env_file:
+      - .env.debug
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    command: >
+      sh -c "python manage.py migrate &&
+             python manage.py runserver 0.0.0.0:8000"
+
+  nginx:
+    image: nginx:latest
+    volumes:
+      - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./backend/static:/static
+    ports:
+      - "80:80"
+    depends_on:
+      - django
+
+
+volumes:
+  postgres_data:

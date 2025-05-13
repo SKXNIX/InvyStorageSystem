@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Список товаров</h2>
+<a href="{% url 'products:create' %}" class="btn">Добавить товар</a>
+<a href="{% url 'products:category_list' %}" class="btn">Управление категориями</a>
+
+<table class="product-table">
+    <thead>
+        <tr>
+            <th>Наименование</th>
+            <th>Категория</th>
+            <th>Ед.изм</th>
+            <th>Место хранения</th>
+            <th>Действия</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for product in products %}
+        <tr>
+            <td>{{ product.name }}</td>
+            <td>{{ product.category }}</td>
+            <td>{{ product.get_unit_display }}</td>
+            <td>{{ product.location }}</td>
+            <td>
+                <a href="{% url 'products:edit' product.pk %}">✏️</a>
+                <a href="{% url 'products:delete' product.pk %}">🗑️</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<!-- Пагинация -->
+<div class="pagination">
+    {% if products.has_previous %}
+        <a href="?page=1" class="btn btn-sm">Первая</a>
+        <a href="?page={{ products.previous_page_number }}" class="btn btn-sm">Предыдущая</a>
+    {% endif %}
+    
+    <span class="current">
+        Страница {{ products.number }} из {{ products.paginator.num_pages }}
+    </span>
+    
+    {% if products.has_next %}
+        <a href="?page={{ products.next_page_number }}" class="btn btn-sm">Следующая</a>
+        <a href="?page={{ products.paginator.num_pages }}" class="btn btn-sm">Последняя</a>
+    {% endif %}
+</div>
+{% endblock %}

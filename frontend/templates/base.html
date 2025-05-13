@@ -138,12 +138,17 @@
             border: 1px solid #D1D5DB;
             border-radius: 5px;
         }
+
     </style>
 </head>
 <body>
     <div class="user-info">
         {% if user.is_authenticated %}
-            Привет, {{ user.username }}! | <a href="{% url 'auth:logout' %}">Выйти</a>
+            Привет, {{ user.username }}! |
+            <form action="{% url 'auth:logout' %}" method="post" style="display: inline;">
+                {% csrf_token %}
+                <button type="submit" style="background: none; border: none; color: blue; cursor: pointer; padding: 0; font: inherit;">Выйти</button>
+            </form>
         {% else %}
             <a href="{% url 'auth:login' %}">Войти</a>
         {% endif %}

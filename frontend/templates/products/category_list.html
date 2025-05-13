@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Управление категориями</h2>
+<a href="{% url 'products:category_create' %}" class="btn btn-primary">Добавить категорию</a>
+
+<table class="table mt-3">
+    <thead>
+        <tr>
+            <th>Название</th>
+            <th>Действия</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for category in categories %}
+        <tr>
+            <td>{{ category.name }}</td>
+            <td>
+                <a href="{% url 'products:category_edit' category.pk %}" class="btn btn-sm btn-outline-secondary">✏️</a>
+                <a href="{% url 'products:category_delete' category.pk %}" class="btn btn-sm btn-outline-danger">🗑️</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

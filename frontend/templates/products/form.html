@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>{% if form.instance.pk %}Редактирование{% else %}Добавление{% endif %} товара</h2>
+<form method="post">
+    {% csrf_token %}
+    <div class="form-group">
+        <label>Наименование:</label>
+        {{ form.name }}
+    </div>
+    <div class="form-group">
+        <label>Категория:</label>
+        {{ form.category }}
+    </div>
+    <div class="form-group">
+        <label>Единица измерения:</label>
+        {{ form.unit }}
+    </div>
+    <div class="form-group">
+        <label>Описание:</label>
+        {{ form.description }}
+    </div>
+    <div class="form-group">
+        <label>Место хранения:</label>
+        {{ form.location }}
+    </div>
+    <div class="form-group">
+        <label>Минимальный остаток:</label>
+        {{ form.min_stock }}
+    </div>
+    <button type="submit" class="btn btn-primary">Сохранить</button>
+    <a href="{% url 'products:list' %}" class="btn btn-secondary">Отмена</a>
+</form>
+{% endblock %}

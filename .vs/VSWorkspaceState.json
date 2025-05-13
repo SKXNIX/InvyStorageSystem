@@ -1,0 +1,17 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\backend",
+    "\\backend\\apps",
+    "\\backend\\apps\\custom_auth",
+    "\\backend\\config",
+    "\\backend\\config\\settings",
+    "\\docker",
+    "\\docker\\nginx",
+    "\\frontend",
+    "\\frontend\\templates",
+    "\\frontend\\templates\\custom_auth"
+  ],
+  "SelectedNode": "\\backend\\config\\settings\\base.py",
+  "PreviewInSolutionExplorer": false
+}
