@@ -1,5 +1,10 @@
-from django.shortcuts import render
+from django.urls import reverse
+from django.shortcuts import render, redirect
+# from django.contrib.auth.models import User
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
+from django.contrib.admin.views.decorators import staff_member_required
+
 
 # Create your views here.
 from django.views.generic import TemplateView
@@ -19,3 +24,16 @@ class ProductManagementView(LoginRequiredMixin, TemplateView):
         ]
         return context
 '''
+
+
+@login_required
+def StartPage(request):
+    return render(request, 'core/start_page.html', 
+                  {'total_stock': 100,          # Значения для debug
+                  'low_stock_count': 15,
+                  'critical_stock_count': 5}
+                  )
+
+
+
+

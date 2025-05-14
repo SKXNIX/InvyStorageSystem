@@ -5,5 +5,6 @@ from . import views
 app_name = 'core'
 
 urlpatterns = [
-    path('', login_required(views.IndexView.as_view()), name='index'),
+    #path('', login_required(views.IndexView.as_view()), name='index'), 
+    path('', views.StartPage, name='start-page'),   # Временная стартовая страница
 ]
