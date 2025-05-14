@@ -19,11 +19,15 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 
+from apps.administrator.views import admin_panel, create_superuser
+
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('auth/', include('backend.apps.custom_auth.urls')),
+    #path('admin/', admin.site.urls),
     path('', include('backend.apps.core.urls')),
+    path('auth/', include('backend.apps.custom_auth.urls')),
     path('products/', include('backend.apps.products.urls')),
+    path('create-superuser/', create_superuser, name='create_superuser'),
+    path('admin-panel/', include('apps.administrator.urls', namespace='admin')),
 ]
 
 if settings.DEBUG:

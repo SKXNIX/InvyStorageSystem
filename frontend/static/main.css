@@ -65,3 +65,18 @@ form input, form select, form textarea {
     border: 1px solid #ddd;
     border-radius: 4px;
 }
+
+/* Навигация */
+.nav-tabs {
+    border-bottom: 1px solid #ddd;
+}
+
+.nav-link {
+    color: #007bff;
+    margin-right: 15px;
+}
+
+.nav-link.active {
+    font-weight: bold;
+    color: #0056b3;
+}
