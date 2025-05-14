@@ -1,4 +1,5 @@
-﻿from django.http import HttpResponseRedirect
+﻿from django import forms
+from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.contrib import messages
@@ -6,7 +7,7 @@ from django.contrib.auth.hashers import make_password
 from django.contrib.auth.views import PasswordChangeView
 from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
-from django.views.generic import ListView, CreateView, UpdateView, DeleteView
+from django.views.generic import FormView, ListView, CreateView, UpdateView, DeleteView
 
 from apps.custom_auth.models import CustomUser
 from apps.core.mixins import RoleRequiredMixin
@@ -33,6 +34,11 @@ class UserCreateView(CreateView):
             if key != 'superadmin']
         return form
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['action'] = 'Создание'
+        return context
+
     def form_valid(self, form):
         form.instance.password = make_password(form.cleaned_data['password'])
         return super().form_valid(form)
@@ -41,8 +47,20 @@ class UserUpdateView(UpdateView):
     """Представление: изменение данных пользователя"""
     model = CustomUser
     template_name = 'admin_panel/user_form.html'
-    fields = ['username', 'full_name', 'role', 'avatar']
     success_url = reverse_lazy('admin:users')
+
+    class UserForm(forms.ModelForm):
+        class Meta:
+            model = CustomUser
+            fields = ['username', 'full_name', 'role', 'avatar']
+
+        def __init__(self, *args, **kwargs):
+            super().__init__(*args, **kwargs)
+            if self.instance.role == 'superadmin':
+                self.fields['role'].disabled = True
+                self.fields['role'].help_text = "Роль суперадмина нельзя изменить"
+
+    form_class = UserForm
 
     def get_form(self, form_class=None):
         form = super().get_form(form_class)
@@ -50,6 +68,11 @@ class UserUpdateView(UpdateView):
             (key, val) for key, val in CustomUser.ROLE_CHOICES
             if key != 'superadmin']
         return form
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['action'] = 'Изменение'
+        return context
 
 class UserDeleteView(RoleRequiredMixin, DeleteView):
     """Представление: удаление пользователя"""
@@ -64,11 +87,32 @@ class UserDeleteView(RoleRequiredMixin, DeleteView):
             messages.error(request, "Действие запрещено")
             return HttpResponseRedirect(reverse_lazy('users'))
         return super().delete(request, *args, **kwargs)
-            
-class PasswordChangeView(PasswordChangeView):
-    """Представление: смена пароля пользователя"""
-    template_name = 'admin_panel/password_change.html'
-    success_url = reverse_lazy('users')
+
+class PasswordResetView(RoleRequiredMixin, FormView):
+    """Представление: сброс пароля пользователя"""
+    allowed_roles = ['superadmin']
+    template_name = 'admin_panel/password_reset.html'
+    success_url = reverse_lazy('admin:users')
+
+    class PasswordForm(forms.Form):
+        new_password = forms.CharField(
+            label="Новый пароль",
+            widget=forms.PasswordInput,
+            required=True)
+
+    form_class = PasswordForm
+
+    def form_valid(self, form):
+        user_id = self.kwargs.get('pk')
+        new_password = form.cleaned_data['new_password']
+        try:
+            user = CustomUser.objects.get(id=user_id)
+            user.set_password(new_password)
+            user.save()
+            messages.success(self.request, "Пароль успешно изменён")
+        except CustomUser.DoesNotExist:
+            messages.error(self.request, "Пользователь не найден")
+        return super().form_valid(form)
 
 
 @login_required

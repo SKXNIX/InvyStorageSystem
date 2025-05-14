@@ -13,5 +13,5 @@ urlpatterns = [
     path('users/create/', views.UserCreateView.as_view(), name='user-create'),                                  # Создание пользователя
     path('users/<int:pk>/update/', views.UserUpdateView.as_view(), name='user-update'),                         # Изменение пользователя
     path('users/<int:pk>/delete/', views.UserDeleteView.as_view(), name='user-delete'),                         # Удаление пользователя
-    path('users/<int:pk>/change-password/', views.PasswordChangeView.as_view(), name='user-change-password'),   # Смена пароля
+    path('users/<int:pk>/reset-password/', views.PasswordResetView.as_view(), name='user-reset-password'),      # Сброс пароля
 ]
