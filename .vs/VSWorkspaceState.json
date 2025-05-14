@@ -3,15 +3,14 @@
     "",
     "\\backend",
     "\\backend\\apps",
-    "\\backend\\apps\\custom_auth",
-    "\\backend\\config",
-    "\\backend\\config\\settings",
-    "\\docker",
-    "\\docker\\nginx",
-    "\\frontend",
-    "\\frontend\\templates",
-    "\\frontend\\templates\\custom_auth"
+    "\\backend\\apps\\administrator",
+    "\\backend\\apps\\custom_auth\\migrations",
+    "\\docker\\db",
+    "\\docker\\django",
+    "\\frontend\\static",
+    "\\frontend\\templates\\core",
+    "\\frontend\\templates\\products"
   ],
-  "SelectedNode": "\\backend\\config\\settings\\base.py",
+  "SelectedNode": "\\backend\\apps\\administrator\\views.py",
   "PreviewInSolutionExplorer": false
 }

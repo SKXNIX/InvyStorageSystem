@@ -108,8 +108,11 @@ def create_superuser(request):
         username = request.POST.get('username')
         email = request.POST.get('email')
         password = request.POST.get('password')
-        CustomUser.objects.create_superuser(username, email, password)
-        CustomUser.role = 'superadmin'
+
+        user = CustomUser.objects.create_superuser(username, email, password)
+        user.role = 'superadmin'
+        user.save()
+
         return redirect('/')
 
     return render(request, 'custom_auth/create_superuser.html')
