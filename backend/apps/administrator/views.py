@@ -26,6 +26,13 @@ class UserCreateView(CreateView):
     fields = ['username', 'password', 'full_name', 'role', 'avatar']
     success_url = reverse_lazy('admin:users')
 
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+        form.fields['role'].choices = [
+            (key, val) for key, val in CustomUser.ROLE_CHOICES
+            if key != 'superadmin']
+        return form
+
     def form_valid(self, form):
         form.instance.password = make_password(form.cleaned_data['password'])
         return super().form_valid(form)
@@ -36,6 +43,13 @@ class UserUpdateView(UpdateView):
     template_name = 'admin_panel/user_form.html'
     fields = ['username', 'full_name', 'role', 'avatar']
     success_url = reverse_lazy('admin:users')
+
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+        form.fields['role'].choices = [
+            (key, val) for key, val in CustomUser.ROLE_CHOICES
+            if key != 'superadmin']
+        return form
 
 class UserDeleteView(RoleRequiredMixin, DeleteView):
     """Представление: удаление пользователя"""
