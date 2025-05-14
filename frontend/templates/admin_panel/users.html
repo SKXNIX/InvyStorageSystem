@@ -31,7 +31,7 @@
             <td>{{ user.created_at }}</td>
             <td>
                 <a href="{% url 'administrator:user-update' user.id %}" class="btn btn-sm btn-warning">Изменить</a>
-                <a href="{% url 'administrator:user-change-password' user.id %}" class="btn btn-sm btn-warning">Сменить пароль</a>
+                <a href="{% url 'administrator:user-reset-password' user.id %}" class="btn btn-sm btn-warning">Сбросить пароль</a>
                 {% if user != request.user %}
                 <a href="{% url 'admin:user-delete' user.id %}" class="btn btn-sm btn-danger">Удалить</a>
                 {% endif %}
