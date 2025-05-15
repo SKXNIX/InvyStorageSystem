@@ -35,7 +35,7 @@ http://127.0.0.1/admin/
 
 ## Создание новых приложений на примере "products"
 1. ```docker-compose exec django python manage.py startapp <название приложения> <"путь\\">``` - создаст директорию с файлами, название указываете `<...>` (в нашем случае - "products"), созданную папку после этого нужно переместить в `backend/apps`. Итоговая команда должна выглядеть следующим образом:
-```docker-compose exec django python manage.py startapp products "backend\\apps\\"```
+```docker-compose exec django python manage.py startapp products "backend\\apps\\products\\"```
 3. Создаёте модели в `products/models.py` . (Если файла нет - создайте)
 4. Создаёте формы в `products/forms.py` . 
 5. Создаёте представления в `products/views.py` .
