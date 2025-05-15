@@ -1,11 +1,22 @@
-﻿{% extends "base.html" %}
-{% load static %}
-
+﻿<!-- frontend/templates/admin_panel/user_form.html -->
+{% extends "base.html" %}
 {% block content %}
+{% load static %}
 <h2>{{ action }} пользователя</h2>
+
+<!-- Форма редактирования -->
 <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form.as_p }}
     <button type="submit" class="btn btn-primary">Сохранить</button>
+    <!-- Ссылка на сброс пароля -->
+    {% if request.user.role == 'superadmin' %}
+    <a href="{% url 'admin:user-reset-password' object.id %}" class="btn btn-primary">
+        Сбросить пароль
+    </a>
+    {% endif %}
 </form>
+
+<!--Подключаем стили-->
+<link rel="stylesheet" href="{% static 'css/admin.css' %}">
 {% endblock %}
