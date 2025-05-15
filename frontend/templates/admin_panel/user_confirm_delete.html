@@ -3,7 +3,7 @@
 
 {% block content %}
 <h2>Подтвердите удаление пользователя</h2>
-<p>Вы действительно хотите удалить пользователя <strong>{{ user.username }}</strong>?</p>
+<p>Вы действительно хотите удалить пользователя <strong>{{ user_to_delete.username }}</strong>?</p>
 
 <form method="post">
     {% csrf_token %}
