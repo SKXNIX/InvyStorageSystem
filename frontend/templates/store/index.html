@@ -1,0 +1,17 @@
+﻿{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container">
+    <h1>Добро пожаловать в панель управления складом!</h1>
+    <p>Здесь вы можете управлять складом.</p>
+    <nav>
+        <a href="{% url 'store:place-list' %}" class="button">Настройка мест</a>
+        <a href="{% url 'core:start-page' %}" class="button">Главная</a>
+    </nav>
+</div>
+
+
+<!--Подключаем стили-->
+<link rel="stylesheet" href="{% static 'css/store.css' %}">
+{% endblock %}

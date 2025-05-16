@@ -30,5 +30,5 @@ def print_tree(startpath, ignore_dirs=None, prefix=""):
 
 
 start_directory = '.'  # Начальная директория
-ignore_directories = ['css', 'fonts', 'img', 'js', '.vs', '.git', '__pycache__']  # Список директорий для игнорирования
+ignore_directories = ['css', 'fonts', 'img', 'js', '.vs', '.git', '__pycache__', 'migrations']  # Список директорий для игнорирования
 print_tree(start_directory, ignore_directories)

@@ -220,8 +220,6 @@
             {% csrf_token %}
             <button type="submit" style="background: none; border: none; color: blue; cursor: pointer; padding: 0; font: inherit;">Выйти</button>
         </form>
-        {% else %}
-        <a href="{% url 'auth:login' %}">Войти</a>
         {% endif %}
     </div>
     <div class="header">

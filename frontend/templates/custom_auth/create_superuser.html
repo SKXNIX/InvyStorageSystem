@@ -1,21 +1,25 @@
 ﻿{% extends "base.html" %}
 
 {% block content %}
-<h2>Создайте суперпользователя</h2>
-<form method="post">
-    {% csrf_token %}
-    <div>
-        <label>Username:</label>
-        <input type="text" name="username" required>
-    </div>
-    <div>
-        <label>Email:</label>
-        <input type="email" name="email">
-    </div>
-    <div>
-        <label>Password:</label>
-        <input type="password" name="password" required>
-    </div>
-    <button type="submit">Создать</button>
-</form>
+<div class="login-form">
+    <h2>Создание суперпользователя</h2>
+    <form method="post">
+        {% csrf_token %}
+        <p class="{% if form.errors %}error{% endif %}">
+            <label>Username:</label>
+            <input type="text" name="username" required>
+        </p>
+        <p class="{% if form.errors %}error{% endif %}">
+            <label>Email:</label>
+            <input type="email" name="email">
+        </p>
+        <p class="{% if form.errors %}error{% endif %}">
+            <label>Password:</label>
+            <input type="password" name="password" required>
+        </p>
+
+        <button type="submit" class="login-button">Войти</button>
+    </form>
+</div>
+
 {% endblock %}
