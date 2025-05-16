@@ -1,0 +1,46 @@
+/* Добавьте в ваш CSS файл */
+.table {
+    font-size: 14px;
+}
+
+.table th {
+    white-space: nowrap;
+    vertical-align: middle;
+}
+
+.table td {
+    vertical-align: middle;
+}
+
+.table-hover tbody tr:hover {
+    background-color: rgba(0, 123, 255, 0.05);
+}
+
+.badge {
+    font-weight: 500;
+    padding: 5px 8px;
+}
+
+.btn-sm {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.8rem;
+}
+
+.input-group {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.card {
+    border: none;
+    box-shadow: 0 0.15rem 1.75rem 0 rgba(33, 40, 50, 0.15);
+}
+
+.card-header {
+    font-weight: 500;
+}
+
+.pagination .page-item.active .page-link {
+    background-color: #4e73df;
+    border-color: #4e73df;
+}
