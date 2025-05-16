@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import Q, F
 
 class Category(models.Model):
     name = models.CharField(max_length=100, unique=True)
@@ -10,7 +11,7 @@ class Product(models.Model):
     UNIT_CHOICES = [
         ('шт', 'Штуки'),
         ('кг', 'Килограммы'),
-        ('л', 'Лиры'),
+        ('л', 'Литры'),
         ('уп', 'Упаковки'),
         ('м', 'Метры'),
     ]
@@ -20,9 +21,18 @@ class Product(models.Model):
     unit = models.CharField(max_length=10, choices=UNIT_CHOICES)
     description = models.TextField(blank=True)
     location = models.CharField(max_length=100)
+    quantity = models.PositiveIntegerField(default=0)
     min_stock = models.PositiveIntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     
     def __str__(self):
         return self.name
+    
+    @property
+    def stock_status(self):
+        if self.quantity == 0:
+            return 'out_of_stock'
+        elif self.quantity <= self.min_stock:
+            return 'critical'
+        return 'in_stock'

@@ -1,23 +1,63 @@
+from django.db.models import Q, F
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import ListView
 from .models import Product, Category
-from .forms import ProductForm, CategoryForm
+from .forms import ProductForm, CategoryForm, ProductFilterForm
 from django.core.paginator import Paginator
+from django.db.models import Q
 
 def product_list(request):
-    product_list = Product.objects.all().select_related('category')
-    paginator = Paginator(product_list, 25)  # 25 товаров на страницу
+    # Получаем параметры фильтрации
+    search = request.GET.get('search', '')
+    category_id = request.GET.get('category', '')
+    availability = request.GET.get('availability', 'all')
+    critical = request.GET.get('critical', False)
     
+    # Фильтрация товаров
+    products = Product.objects.all().select_related('category')
+    
+    if search:
+        products = products.filter(
+            Q(name__icontains=search) |
+            Q(category__name__icontains=search) |
+            Q(location__icontains=search)
+        )
+    
+    if category_id:
+        products = products.filter(category_id=category_id)
+    
+    if availability == 'available':
+        products = products.filter(quantity__gt=0)
+    elif availability == 'out_of_stock':
+        products = products.filter(quantity=0)
+    
+    if critical:
+        products = products.filter(quantity__lte=F('min_stock'))
+    
+    # Пагинация
+    paginator = Paginator(products, 25)
     page_number = request.GET.get('page')
-    products = paginator.get_page(page_number)
+    page_obj = paginator.get_page(page_number)
     
-    return render(request, 'products/list.html', {'products': products})
-
+    # Получаем все категории для фильтра
+    categories = Category.objects.all()
+    
+    context = {
+        'products': page_obj,
+        'categories': categories,
+        'search': search,
+        'selected_category': category_id,
+        'selected_availability': availability,
+        'critical_checked': 'checked' if critical else '',
+    }
+    return render(request, 'products/list.html', context)
+    
 def product_create(request):
     if request.method == 'POST':
         form = ProductForm(request.POST)
         if form.is_valid():
-            form.save()
+            product = form.save()
+            #messages.success(request, f'Товар "{product.name}" успешно добавлен!')
             return redirect('products:list')
     else:
         form = ProductForm()
