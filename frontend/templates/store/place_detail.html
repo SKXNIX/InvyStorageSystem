@@ -1,0 +1,75 @@
+﻿{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Детали места: {{ place.name }}{% endblock %}
+
+{% block content %}
+<h1>Детали места: {{ place.name }}</h1>
+
+<!-- Навигация -->
+<a href="{% url 'store:place-list' %}" class="btn-sm">
+    Назад к списку
+</a>
+
+<!-- Основные поля -->
+<div class="card mb-3">
+    <div class="card-body">
+        <h3 style="margin-top: 0" class="card-header">{{ place.name }} ({{ place.type }})</h3>
+        <p style="margin-left: 1rem" class="card-text">
+            <strong>Идентификатор:</strong> {{ place.identifier }}<br>
+            <strong>Вместимость:</strong> {{ place.capacity }} кг/м³<br>
+            <strong>Температурный режим:</strong> {{ place.temperature|default:"—" }}<br>
+            <strong>Родительское место:</strong>
+            {% if place.parent %}
+            <a href="{% url 'store:place-detail' pk=place.parent.pk %}">
+                {{ place.parent.name }}
+            </a>
+            {% else %}
+            —
+            {% endif %}
+        </p>
+        <p style="margin-left: 1rem" class="card-text">
+            <strong>Полный путь:</strong> {{ place.full_path }}
+        </p>
+    </div>
+</div>
+
+<!-- Дочерние места -->
+  {% if place.children.exists %}
+<div class="card">
+    <div class="card-header">
+        Дочерние места ({{ place.children.count }})
+    </div>
+    <ul class="list-group list-group-flush">
+        {% for child in place.children.all %}
+        <li class="list-group-item">
+            <a href="{% url 'store:place-detail' pk=child.pk %}">
+                {{ child.name }} ({{ child.type }})
+            </a>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+  {% else %}
+<div class="alert alert-info">
+    У этого места нет дочерних элементов.
+</div>
+  {% endif %}
+
+<!-- Действия (редактирование/удаление) -->
+  {% if user.role == 'superadmin' or user.role == 'admin' %}
+<div >
+    <a href="{% url 'store:place-update' pk=place.pk %}"
+       class="btn-sm">
+        Редактировать
+    </a>
+    <a href="{% url 'store:place-delete' pk=place.pk %}"
+       class="btn-sm">
+        Удалить
+    </a>
+</div>
+  {% endif %}
+
+<!-- Подключаем стили -->
+<link rel="stylesheet" href="{% static 'css/store.css' %}">
+{% endblock %}

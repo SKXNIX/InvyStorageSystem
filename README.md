@@ -34,15 +34,16 @@ http://127.0.0.1/admin/
 ```
 
 ## Создание новых приложений на примере "products"
-1. ```docker-compose exec django python manage.py startapp <название приложения>``` - создаст директорию с файлами, название указываете `<...>` (в нащем случае - "products"), созданную папку после этого нужно переместить в `backend/apps`.  
-2. Создаёте модели в `products/models.py` . (Если файла нет - создайте)
-3. Создаёте формы в `products/forms.py` . 
-4. Создаёте представления в `products/views.py` .
-5. Для проверки создаёте простой фронтенд в `frontend/templates/products/`, создавая файл `.html`.
-6. Добавляете необходимые адреса в `products/urls.py` .
-7. Подключаете приложение в `INSTALLED_APPS` в `backend/config/settings/base.py` .
-8. Добавляете главный URL приложения в `backend/config/urls.py` .
-9. После успешной сборки в докер создайте и примените миграции для вашего приложения, чтобы заработали базы данных:
+1. ```docker-compose exec django python manage.py startapp <название приложения> <"путь\\">``` - создаст директорию с файлами, название указываете `<...>` (в нашем случае - "products"), созданную папку после этого нужно переместить в `backend/apps`. Итоговая команда должна выглядеть следующим образом:
+```docker-compose exec django python manage.py startapp products "backend\\apps\\products\\"```
+3. Создаёте модели в `products/models.py` . (Если файла нет - создайте)
+4. Создаёте формы в `products/forms.py` . 
+5. Создаёте представления в `products/views.py` .
+6. Для проверки создаёте простой фронтенд в `frontend/templates/products/`, создавая файл `.html`.
+7. Добавляете необходимые адреса в `products/urls.py` .
+8. Подключаете приложение в `INSTALLED_APPS` в `backend/config/settings/base.py` .
+9. Добавляете главный URL приложения в `backend/config/urls.py` .
+10. После успешной сборки в докер создайте и примените миграции для вашего приложения, чтобы заработали базы данных:
 ```bash
 docker-compose exec django python manage.py makemigrations products
 docker-compose exec django python manage.py migrate

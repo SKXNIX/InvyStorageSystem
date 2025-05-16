@@ -46,10 +46,10 @@
 
 <!-- Ссылки на основные разделы -->
 <div class="d-grid gap-3">
-    <a href="{% url 'products:list' %}" class="button">Управление товарами</a>
     {% if user.role == 'admin' or user.role == 'superadmin' %}
-    <a href="#" class="button">Журнал операций</a>
+    <a href="{% url 'store:store-settings' %}" class="button">Управление складом</a>
     {% endif %}
+    <a href="{% url 'products:list' %}" class="button">Управление товарами</a>
     {% if user.role == 'superadmin' %}
     <a href="{% url 'admin:admin-panel' %}" class="button">Админ-панель</a>
     {% endif %}

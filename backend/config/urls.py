@@ -28,6 +28,7 @@ urlpatterns = [
     path('products/', include('backend.apps.products.urls')),
     path('create-superuser/', create_superuser, name='create_superuser'),
     path('admin-panel/', include('apps.administrator.urls', namespace='admin')),
+    path('store/', include('apps.store.urls', namespace='store')),
 ]
 
 if settings.DEBUG:
