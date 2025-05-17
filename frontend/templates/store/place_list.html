@@ -6,13 +6,14 @@
 
 <!-- Блок с кнопками -->
 <div style="margin: 10px 0px" class="d-flex mb-3">
+    <a href="{% url 'store:store-settings' %}" class="btn-sm">В меню</a>
     <a href="{% url 'store:place-create' %}" class="btn-sm">Добавить новое место</a>
 </div>
 
 <!-- Форма для массового удаления -->
 <form id="delete-selected-form" method="post" action="{% url 'store:delete-selected-places' %}" class="d-none">
     {% csrf_token %}
-    <button type="submit" class="btn-sm" onclick="return confirm('Удалить выбранные места?')">Удалить выбранных</button>
+    <button type="submit" class="btn-sm" onclick="return confirm('Удалить выбранные места?')">Удалить выбранные</button>
     <!-- Таблица -->
     <table class="table-excel">
         <thead>

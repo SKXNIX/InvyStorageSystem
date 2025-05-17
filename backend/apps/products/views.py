@@ -51,7 +51,7 @@ def product_list(request):
         'critical_checked': 'checked' if critical else '',
     }
     return render(request, 'products/list.html', context)
-    
+
 def product_create(request):
     if request.method == 'POST':
         form = ProductForm(request.POST)
