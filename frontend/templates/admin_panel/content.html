@@ -1,6 +1,10 @@
 ﻿{% extends "base.html" %}
 
 {% block content %}
+<a href="{% url 'administrator:admin-panel' %}" class="button" style="padding: 0.2rem 0.35rem; margin-bottom: 1rem; display: inline-block; font-size: 12px;">
+    <i class="fas fa-arrow-left"></i> Назад
+</a>
+
 <h2>Контент</h2>
 <ul>
     <li>{{ content }}</li>

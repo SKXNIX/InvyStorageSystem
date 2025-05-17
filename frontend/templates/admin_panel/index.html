@@ -2,16 +2,17 @@
 {% load static %}
 
 {% block content %}
-<h1>Админ-панель</h1>
-<nav>
-    <a href="{% url 'core:start-page' %}" class="button">Главная</a>
-    <a class="button" href="{% url 'admin:users' %}">Пользователи</a>
-    <a class="button" href="{% url 'admin:content' %}">Контент</a>
-    <a class="button" href="{% url 'admin:settings' %}">Настройки</a>
-</nav>
+<div style="max-width: 1200px; margin: 0 auto; padding: 0 1rem;">
+    <div class="container mt-4">
+        <h2>Добро пожаловать в Админ-панель!</h2>
+        <p>Здесь вы можете управлять сайтом.</p>
 
-<div class="container mt-4">
-    <h2>Добро пожаловать в админ-панель!</h2>
-    <p>Здесь вы можете управлять сайтом.</p>
+    <nav>
+        <a class="button" style="padding: 0.75rem 1.5rem; margin-bottom: 1rem; display: inline-block;" href="{% url 'admin:users' %}">Пользователи</a>
+        <a class="button" style="padding: 0.75rem 1.5rem; margin-bottom: 1rem; display: inline-block;" href="{% url 'admin:content' %}">Контент</a>
+        <a class="button" style="padding: 0.75rem 1.5rem; margin-bottom: 1rem; display: inline-block;" href="{% url 'admin:settings' %}">Настройки</a>
+    </nav>
+    </div>
+
 </div>
 {% endblock %}

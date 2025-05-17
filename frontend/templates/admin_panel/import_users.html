@@ -1,0 +1,30 @@
+﻿{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<a href="{% url 'administrator:admin-panel' %}" class="button" style="padding: 0.2rem 0.35rem; margin-bottom: 1rem; display: inline-block; font-size: 12px;">
+    <i class="fas fa-arrow-left"></i> Назад
+</a>
+
+<h2>Импорт пользователей из Excel</h2>
+<p>
+    <strong>Формат файла:</strong>
+    Столбцы должны быть:
+    <ul>
+        <li><code>Full name</code> — обязательное поле</li>
+        <li><code>Role</code> — обязательное поле (возможные значения: <code>admin</code>, <code>storekeeper</code>)</li>
+    </ul>
+    <a href="{% static 'example_files/user_template.xlsx' %}" class="btn btn-primary" download>
+        Скачать пример шаблона
+    </a>
+</p>
+
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">Загрузить файл</button>
+</form>
+
+<!-- Подключаем стили -->
+<link rel="stylesheet" href="{% static 'css/admin.css' %}">
+{% endblock %}
