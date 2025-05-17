@@ -1,0 +1,27 @@
+﻿{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+<head>
+    <meta charset="UTF-8">
+    <title>Изменение статуса поступления</title>
+</head>
+<body>
+    <h1>Изменение статуса поступления</h1>
+    <form method="post">
+        {% csrf_token %}
+        <label for="status">Статус:</label>
+        <select name="{{ form.status.name }}" id="status">
+            <!-- Используйте имя поля формы -->
+            {% for value, display in receipt.STATUS_CHOICES %}
+            <option value="{{ value }}" {% if value == receipt.status %}selected{% endif %}>{{ display }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit">Сохранить</button>
+    </form>
+    <a href="{% url 'store:receipts-list' %}">Назад к списку поступлений</a>
+</body>
+<!--Подключаем стили-->
+<link rel="stylesheet" href="{% static 'css/store.css' %}">
+{% endblock %}
