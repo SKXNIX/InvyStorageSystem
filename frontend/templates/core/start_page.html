@@ -2,56 +2,53 @@
 {% load static %}
 
 {% block content %}
-<!-- Приветственное сообщение -->
-<div class="welcome-section p-4 mb-4 bg-light rounded-3">
-    <h1 class="display-5 fw-bold">Добро пожаловать в WH-Helper!</h1>
-    <p class="lead">Система управления складом для эффективного отслеживания товаров и операций.</p>
-</div>
-
-<!-- Краткий обзор остатков -->
-<div class="row row-cols-1 row-cols-md-3 g-4 mb-4">
-    <!-- Общее количество товаров -->
-    <div class="col">
-        <div class="card h-100 border-primary">
-            <div class="card-body text-center">
-                <h5 class="card-title">Общее количество товаров</h5>
-                <p class="display-4 fw-bold">{{ total_stock }}</p>
-                <small>на складе</small>
-            </div>
+<div style="max-width: 900px; margin: 0 auto; padding: 0 1rem;">
+    <div class="container">
+        <!-- Приветственное сообщение -->
+        <div class="welcome-section p-4 mb-4 bg-light rounded-3">
+            <h1 class="display-5 fw-bold">Добро пожаловать в WH-Helper!</h1>
+            <p class="lead">Система управления складом для эффективного отслеживания товаров и операций.</p>
         </div>
-    </div>
 
-    <!-- Минимальные остатки -->
-    <div class="col">
-        <div class="card h-100 border-warning">
-            <div class="card-body text-center">
-                <h5 class="card-title">Товары с низкими остатками</h5>
-                <p class="display-4 fw-bold">{{ low_stock_count }}</p>
-                <small>товаров требуют пополнения</small>
+        <!-- Краткий обзор остатков -->
+        <div style="display: flex; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.5rem;">
+            <!-- Общее количество товаров -->
+            <div style="flex: 1 1 30%; min-width: 250px;">
+                <div style="border: 1px solid #1E3A8A; border-radius: 4px; padding: 1rem; text-align: center; background-color: #fff;">
+                    <h5 style="margin-bottom: 0.5rem;">Общее количество товаров</h5>
+                    <p style="font-size: 2.5rem; font-weight: bold; margin: 0;">{{ total_stock }}</p>
+                    <small style="color: #6c757d;">на складе</small>
+                </div>
             </div>
-        </div>
-    </div>
 
-    <!-- Критические остатки -->
-    <div class="col">
-        <div class="card h-100 border-danger">
-            <div class="card-body text-center">
-                <h5 class="card-title">Критические остатки</h5>
-                <p class="display-4 fw-bold">{{ critical_stock_count }}</p>
-                <small>товаров требуют срочного заказа</small>
+            <!-- Минимальные остатки -->
+            <div style="flex: 1 1 30%; min-width: 0;">
+                <div style="border: 1px solid #FFC107; border-radius: 4px; padding: 1rem; text-align: center; background-color: #fff;">
+                    <h5 style="margin-bottom: 0.5rem;">Товары с низкими остатками</h5>
+                    <p style="font-size: 2.5rem; font-weight: bold; margin: 0;">{{ low_stock_count }}</p>
+                    <small style="color: #6c757d;">товаров требуют пополнения</small>
+                </div>
+            </div>
+
+            <!-- Критические остатки -->
+            <div style="flex: 1 1 30%; min-width: 0;">
+                <div style="border: 1px solid #dc3545; border-radius: 4px; padding: 1rem; text-align: center; background-color: #fff;">
+                    <h5 style="margin-bottom: 0.5rem;">Критические остатки</h5>
+                    <p style="font-size: 2.5rem; font-weight: bold; margin: 0;">{{ critical_stock_count }}</p>
+                    <small style="color: #6c757d;">товаров требуют срочного заказа</small>
+                </div>
             </div>
         </div>
     </div>
 </div>
-
-<!-- Ссылки на основные разделы -->
-<div class="d-grid gap-3">
-    <a href="{% url 'products:list' %}" class="button">Управление товарами</a>
-    {% if user.role == 'admin' or user.role == 'superadmin' %}
-    <a href="#" class="button">Журнал операций</a>
-    {% endif %}
-    {% if user.role == 'superadmin' %}
-    <a href="{% url 'admin:admin-panel' %}" class="button">Админ-панель</a>
-    {% endif %}
-</div>
+<!--&lt;!&ndash; Ссылки на основные разделы &ndash;&gt;-->
+<!--<div class="d-grid gap-3">-->
+<!--    {% if user.role == 'admin' or user.role == 'superadmin' %}-->
+<!--    <a href="{% url 'store:store-settings' %}" class="button">Управление складом</a>-->
+<!--    {% endif %}-->
+<!--    <a href="{% url 'products:list' %}" class="button">Управление товарами</a>-->
+<!--    {% if user.role == 'superadmin' %}-->
+<!--    <a href="{% url 'admin:admin-panel' %}" class="button">Админ-панель</a>-->
+<!--    {% endif %}-->
+<!--</div>-->
 {% endblock %}
