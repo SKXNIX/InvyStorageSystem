@@ -1,0 +1,36 @@
+﻿{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<h1>Состояние склада</h1>
+
+<!-- Блок с кнопками -->
+<div style="margin: 12px 0px" class="d-flex mb-3">
+    <a href="{% url 'store:store-settings' %}" class="btn-sm">В меню</a>
+    <a href="{% url 'store:add-receipt' %}" class="btn-sm">Добавить поступление</a>
+    <a href="{% url 'store:add-dispatch' %}" class="btn-sm">Добавить отгрузку</a>
+</div>
+
+<table class="table-excel">
+    <tr>
+        <th>Товар</th>
+        <th>Категория</th>
+        <th>Место хранения</th>
+        <th>Количество</th>
+    </tr>
+    {% for store in stores %}
+    <tr>
+        <td>{{ store.product.name }}</td>
+        <td>{{ store.product.category }}</td>
+        <td>{{ store.product.location }}</td>
+        <td>{{ store.quantity }} {{ store.product.unit }}</td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="2">Нет мест</td></tr>
+    {% endfor %}
+</table>
+
+
+<!--Подключаем стили-->
+<link rel="stylesheet" href="{% static 'css/store.css' %}">
+{% endblock %}
