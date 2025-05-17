@@ -1,9 +1,14 @@
 {% extends "base.html" %}
 
 {% block content %}
+<div style="max-width: 1200px; margin: 0 auto; padding: 0 1rem;">
+    <h2>Добро пожаловать в панель управления товарами!</h2>
+    <p>Здесь вы можете управлять товарами.</p>
+</div>
+
 <h2>Список товаров</h2>
-<a href="{% url 'products:create' %}" class="btn">Добавить товар</a>
-<a href="{% url 'products:category_list' %}" class="btn">Управление категориями</a>
+<a href="{% url 'products:create' %}" class="button" style="padding: 0.4rem 0.4rem; margin-bottom: 0.1rem; display: inline-block; font-size: 14px;">Добавить товар</a>
+<a href="{% url 'products:category_list' %}" class="button" style="padding: 0.4rem 0.4rem; margin-bottom: 0.1rem; display: inline-block; font-size: 14px;">Управление категориями</a>
 
 <table class="product-table">
     <thead>

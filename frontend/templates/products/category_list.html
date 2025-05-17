@@ -1,8 +1,11 @@
 {% extends "base.html" %}
 
 {% block content %}
+<a href="{% url 'products:list' %}" class="button" style="padding: 0.2rem 0.35rem; margin-bottom: 1rem; display: inline-block; font-size: 12px;">
+    <i class="fas fa-arrow-left"></i> Назад
+</a>
 <h2>Управление категориями</h2>
-<a href="{% url 'products:category_create' %}" class="btn btn-primary">Добавить категорию</a>
+<a href="{% url 'products:category_create' %}" class="button" style="padding: 0.4rem 0.4rem; margin-bottom: 0.1rem; display: inline-block; font-size: 14px;">Добавить категорию</a>
 
 <table class="table mt-3">
     <thead>
