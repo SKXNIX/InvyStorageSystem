@@ -1,0 +1,15 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\backend",
+    "\\backend\\apps",
+    "\\backend\\apps\\administrator",
+    "\\backend\\apps\\core",
+    "\\backend\\apps\\custom_auth",
+    "\\backend\\apps\\products",
+    "\\backend\\apps\\store",
+    "\\frontend"
+  ],
+  "SelectedNode": "\\backend\\apps\\store\\urls.py",
+  "PreviewInSolutionExplorer": false
+}
