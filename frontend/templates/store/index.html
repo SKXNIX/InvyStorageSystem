@@ -2,11 +2,15 @@
 {% load static %}
 
 {% block content %}
-<div class="container">
-    <h1>Добро пожаловать в панель управления складом!</h1>
-    <p>Здесь вы можете управлять складом.</p>
+    <h1>Панель управления складскими операциями</h1>
+    <p>Здесь вы можете производить приём и отгрузку товаров</p>
     <nav>
-        <a href="{% url 'store:place-list' %}" class="button">Настройка мест</a>
+        <a href="{% url 'store:receipts-list' %}" class="button">Поступления</a>
+        <a href="{% url 'store:dispatch-list' %}" class="button">Отгрузки</a>
+        <a href="{% url 'store:store-list' %}" class="button">Склад</a>
+        {% if user.role == 'superadmin' or user.role == 'admin' %}
+        <a href="{% url 'store:suppliers-list' %}" class="button">Поставщики</a>
+        {% endif %}
         <a href="{% url 'core:start-page' %}" class="button">Главная</a>
     </nav>
 </div>
