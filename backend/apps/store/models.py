@@ -4,6 +4,10 @@ from django.core.exceptions import ValidationError
 from apps.products.models import Product
 from apps.custom_auth.models import CustomUser
 
+from django.db import models
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
 
 class Store(models.Model):
     product = models.ForeignKey(Product, on_delete=models.PROTECT)
@@ -80,34 +84,26 @@ class StockReceipt(models.Model):
         ('pending', 'Ожидается'),
         ('cancelled', 'Отменено'),
     ]
-
-    product = models.ForeignKey(Product, on_delete=models.PROTECT)
+    
+    product = models.ForeignKey('products.Product', on_delete=models.PROTECT)
     quantity = models.DecimalField(max_digits=10, decimal_places=2)
     receipt_date = models.DateField()
     invoice_number = models.CharField(max_length=100, unique=True)
-    supplier = models.ForeignKey(Supplier, on_delete=models.PROTECT)
+    supplier = models.ForeignKey('Supplier', on_delete=models.PROTECT)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
     comment = models.TextField(blank=True)
-
-    def save(self, *args, **kwargs):
-        user = kwargs.pop('user', None)
-        if self.pk:
-            original = StockReceipt.objects.get(pk=self.pk)
-            if original.status == 'received' and self.status != 'received':
-                if not user or not user.role == 'superadmin':
-                    raise ValueError("Нельзая изменить статус поступления, которое уже было получено")
-                store = Store.objects.get(product=self.product)
-                store.quantity -= original.quantity
-                store.save()
-        if self.status == 'received':
-            store, created = Store.objects.get_or_create(product=self.product)
-            store.quantity += self.quantity
-            store.save()
-        super().save(*args, **kwargs)
+    created_by = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='created_receipts'
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f'{self.product.name} - {self.quantity} {self.product.unit} - {self.receipt_date}'
-
+        return f'{self.product.name} - {self.quantity}'
 
 class Dispatch(models.Model):
     STATUS_CHOICES = [
