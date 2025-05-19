@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Генерация отчета</h2>
+    <form method="post">
+        {% csrf_token %}
+        
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label class="form-label">{{ form.report_type.label }}</label>
+                {{ form.report_type }}
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">{{ form.format.label }}</label>
+                {{ form.format }}
+            </div>
+        </div>
+        
+        <div id="date-fields" class="row mb-3" style="display: none;">
+            <div class="col-md-6">
+                <label class="form-label">{{ form.start_date.label }}</label>
+                {{ form.start_date }}
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">{{ form.end_date.label }}</label>
+                {{ form.end_date }}
+            </div>
+        </div>
+        
+        <div id="product-field" class="mb-3" style="display: none;">
+            <label class="form-label">{{ form.product.label }}</label>
+            {{ form.product }}
+        </div>
+        
+        <button type="submit" class="btn btn-primary">Сгенерировать</button>
+    </form>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const reportType = document.getElementById('id_report_type');
+    const dateFields = document.getElementById('date-fields');
+    const productField = document.getElementById('product-field');
+    
+    function updateFields() {
+        const type = reportType.value;
+        dateFields.style.display = ['operations', 'product_operations'].includes(type) ? 'flex' : 'none';
+        productField.style.display = type === 'product_operations' ? 'block' : 'none';
+    }
+    
+    reportType.addEventListener('change', updateFields);
+    updateFields(); // Инициализация при загрузке
+});
+</script>
+{% endblock %}

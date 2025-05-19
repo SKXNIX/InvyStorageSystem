@@ -22,6 +22,7 @@ INSTALLED_APPS = [
     'apps.products',
     'apps.administrator',
     'apps.store',
+    'apps.reports',
 ]
 
 MIDDLEWARE = [
@@ -109,3 +110,11 @@ if DEBUG:
     INSTALLED_APPS += ['debug_toolbar']
     MIDDLEWARE += ['debug_toolbar.middleware.DebugToolbarMiddleware']
     INTERNAL_IPS = ['127.0.0.1']
+    
+REPORTLAB_CONFIG = {
+    'font_name': 'Helvetica',
+    'font_size': 10,
+    'page_size': 'A4',
+}
+
+XHTML2PDF_USE_CSSMIN = True

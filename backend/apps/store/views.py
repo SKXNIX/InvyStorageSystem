@@ -100,13 +100,14 @@ def store_page(request):
 @role_required(['superadmin', 'admin','storekeeper'])
 def add_stock_receipt(request):
     if request.method == 'POST':
-        form = StockReceiptForm(request.POST)
+        form = StockReceiptForm(request.POST, user=request.user)  # Передаем user в форму
         if form.is_valid():
-            form.save(user=request.user)
+            receipt = form.save()  # Теперь save() не принимает user
+            messages.success(request, f'Поступление #{receipt.id} успешно добавлено')
             return redirect('store:receipts-list')
     else:
         form = StockReceiptForm(user=request.user)
-
+    
     return render(request, 'store/add_receipt.html', {'form': form})
 
 
