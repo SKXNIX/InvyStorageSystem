@@ -1,11 +1,21 @@
-{% extends "base.html" %}
+{% extends "master.html" %}
+{% load static %}
+
+
+{% block bar_content %}
+<div style="padding-top: 0px" class="page-header">
+    <h2>Подтверждение удаления</h2>
+    <p>Вы уверены, что хотите удалить "{{ category.name }}"?</p>
+</div>
+{% endblock %}
+
 
 {% block content %}
-<h2>Подтверждение удаления</h2>
-<p>Вы уверены, что хотите удалить "{{ category.name }}"?</p>
 <form method="post">
     {% csrf_token %}
-    <button type="submit" class="btn btn-danger">Удалить</button>
-    <a href="{% url 'products:list' %}" class="btn btn-secondary">Отмена</a>
+    <div style="width: 50%" class="frm-group-button">
+        <button class="btn-xm btn-primary" type="submit">Удалить</button>
+        <a href="{% url 'products:category_list' %}" class="btn-xm">Отменить</a>
+    </div>
 </form>
 {% endblock %}

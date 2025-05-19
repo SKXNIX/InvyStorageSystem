@@ -1,21 +1,253 @@
-﻿{% extends "base.html" %}
-{% load static %}
+﻿{% extends "master.html" %}
+
+
+{% block bar_content %}
+<div class="search-bar">
+    <div class="search-input">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+        </svg>
+        <input type="text" placeholder="Search...">
+    </div>
+</div>
+<!-- Приветственное сообщение -->
+<div style="padding-top: 0px" class="page-header">
+    <h2>Панель управления складскими операциями</h2>
+    <p>Здесь вы можете производить приём и отгрузку товаров</p>
+</div>
+{% endblock %}
+
 
 {% block content %}
-    <h1>Панель управления складскими операциями</h1>
-    <p>Здесь вы можете производить приём и отгрузку товаров</p>
-    <nav>
-        <a href="{% url 'store:receipts-list' %}" class="button">Поступления</a>
-        <a href="{% url 'store:dispatch-list' %}" class="button">Отгрузки</a>
-        <a href="{% url 'store:store-list' %}" class="button">Склад</a>
-        {% if user.role == 'superadmin' or user.role == 'admin' %}
-        <a href="{% url 'store:suppliers-list' %}" class="button">Поставщики</a>
-        {% endif %}
-        <a href="{% url 'core:start-page' %}" class="button">Главная</a>
-    </nav>
+<div class="container">
+    <!-- Приходы -->
+    <div class="tcard">
+        <h2 class="card-title">Приходы</h2>
+        <div class="card-content">
+            <div class="button-group">
+                <a href="{% url 'store:add-receipt' %}" class="action-btn">Добавить приход</a>
+            </div>
+            <div class="table-container">
+                <table class="table-card">
+                    <thead>
+                        <tr>
+                            <th><input type="checkbox" id="select-all"></th>
+                            <th>
+                                <a href="?sort_by=id&order={% if sort_by == 'id' and order == 'asc' %}desc{% else %}asc{% endif %}">
+                                    ID
+                                    <span class="sort-icon {% if sort_by == 'id' %}active {{ order }}{% endif %}"></span>
+                                </a>
+                            </th>
+                            <th>
+                                <a href="?sort_by=product&order={% if sort_by == 'product' and order == 'asc' %}desc{% else %}asc{% endif %}">
+                                    Товар
+                                    <span class="sort-icon {% if sort_by == 'product' %}active {{ order }}{% endif %}"></span>
+                                </a>
+                            </th>
+                            <th>
+                                <a href="?sort_by=quantity&order={% if sort_by == 'quantity' and order == 'asc' %}desc{% else %}asc{% endif %}">
+                                    Количество
+                                    <span class="sort-icon {% if sort_by == 'quantity' %}active {{ order }}{% endif %}"></span>
+                                </a>
+                            </th>
+                            <th>
+                                <a href="?sort_by=receipt_date&order={% if sort_by == 'receipt_date' and order == 'asc' %}desc{% else %}asc{% endif %}">
+                                    Дата поступления
+                                    <span class="sort-icon {% if sort_by == 'receipt_date' %}active {{ order }}{% endif %}"></span>
+                                </a>
+                            </th>
+                            <th>
+                                <a href="?sort_by=invoice_number&order={% if sort_by == 'invoice_number' and order == 'asc' %}desc{% else %}asc{% endif %}">
+                                    Номер накладной
+                                    <span class="sort-icon {% if sort_by == 'invoice_number' %}active {{ order }}{% endif %}"></span>
+                                </a>
+                            </th>
+                            <th>
+                                <a href="?sort_by=supplier&order={% if sort_by == 'supplier' and order == 'asc' %}desc{% else %}asc{% endif %}">
+                                    Поставщик
+                                    <span class="sort-icon {% if sort_by == 'supplier' %}active {{ order }}{% endif %}"></span>
+                                </a>
+                            </th>
+                            <th>
+                                <a href="?sort_by=status&order={% if sort_by == 'status' and order == 'asc' %}desc{% else %}asc{% endif %}">
+                                    Статус
+                                    <span class="sort-icon {% if sort_by == 'status' %}active {{ order }}{% endif %}"></span>
+                                </a>
+                            </th>
+                            <th>Действия</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for receipt in receipts %}
+                        <tr>
+                            <td><input type="checkbox" name="selected_receipts" value="{{ receipt.id }}"></td>
+                            <td>{{ receipt.id }}</td>
+                            <td>{{ receipt.product.name }}</td>
+                            <td>{{ receipt.quantity }} {{ receipt.product.unit }}</td>
+                            <td>{{ receipt.receipt_date }}</td>
+                            <td>{{ receipt.invoice_number }}</td>
+                            <td>{{ receipt.supplier }}</td>
+                            <td>{{ receipt.get_status_display }}</td>
+                            <td>
+                                <a href="{% url 'store:update_receipt_status' receipt.pk %}">Изменить статус</a>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr><td colspan="9">Нет приходов</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Расходы -->
+    <div class="tcard">
+        <h2 class="card-title">Расходы</h2>
+        <div class="card-content">
+            <div class="button-group">
+                <a href="{% url 'store:add-dispatch' %}" class="action-btn">Добавить расход</a>
+            </div>
+            <div class="table-container">
+                <table class="table-card">
+                    <thead>
+                        <tr>
+                            <th><input type="checkbox" id="select-all"></th>
+                            <th>
+                                <a href="?sort_by=id&order={% if sort_by == 'id' and order == 'asc' %}desc{% else %}asc{% endif %}">
+                                    ID
+                                    <span class="sort-icon {% if sort_by == 'id' %}active {{ order }}{% endif %}"></span>
+                                </a>
+                            </th>
+                            <th>
+                                <a href="?sort_by=product&order={% if sort_by == 'product' and order == 'asc' %}desc{% else %}asc{% endif %}">
+                                    Товар
+                                    <span class="sort-icon {% if sort_by == 'product' %}active {{ order }}{% endif %}"></span>
+                                </a>
+                            </th>
+                            <th>
+                                <a href="?sort_by=quantity&order={% if sort_by == 'quantity' and order == 'asc' %}desc{% else %}asc{% endif %}">
+                                    Количество
+                                    <span class="sort-icon {% if sort_by == 'quantity' %}active {{ order }}{% endif %}"></span>
+                                </a>
+                            </th>
+                            <th>
+                                <a href="?sort_by=dispatch_date&order={% if sort_by == 'dispatch_date' and order == 'asc' %}desc{% else %}asc{% endif %}">
+                                    Дата отгрузки
+                                    <span class="sort-icon {% if sort_by == 'dispatch_date' %}active {{ order }}{% endif %}"></span>
+                                </a>
+                            </th>
+                            <th>
+                                <a href="?sort_by=invoice_number&order={% if sort_by == 'invoice_number' and order == 'asc' %}desc{% else %}asc{% endif %}">
+                                    Номер накладной
+                                    <span class="sort-icon {% if sort_by == 'invoice_number' %}active {{ order }}{% endif %}"></span>
+                                </a>
+                            </th>
+                            <th>
+                                <a href="?sort_by=recipient&order={% if sort_by == 'recipient' and order == 'asc' %}desc{% else %}asc{% endif %}">
+                                    Получатель
+                                    <span class="sort-icon {% if sort_by == 'recipient' %}active {{ order }}{% endif %}"></span>
+                                </a>
+                            </th>
+                            <th>
+                                <a href="?sort_by=status&order={% if sort_by == 'status' and order == 'asc' %}desc{% else %}asc{% endif %}">
+                                    Статус
+                                    <span class="sort-icon {% if sort_by == 'status' %}active {{ order }}{% endif %}"></span>
+                                </a>
+                            </th>
+                            <th>Действия</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for dispatch in dispatches %}
+                        <tr>
+                            <td><input type="checkbox" name="selected_dispatches" value="{{ dispatch.id }}"></td>
+                            <td>{{ dispatch.id }}</td>
+                            <td>{{ dispatch.product.name }}</td>
+                            <td>{{ dispatch.quantity }} {{ dispatch.product.unit }}</td>
+                            <td>{{ dispatch.dispatch_date }}</td>
+                            <td>{{ dispatch.invoice_number }}</td>
+                            <td>{{ dispatch.recipient }}</td>
+                            <td>{{ dispatch.get_status_display }}</td>
+                            <td>
+                                <a href="{% url 'store:update-dispatch-status' dispatch.pk %}">Изменить статус</a>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr><td colspan="9">Нет расходов</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    document.querySelectorAll('.tcard').forEach(card => {
+        card.addEventListener('click', () => {
+            // Проверяем, был ли клик по заголовку или внутри него
+            const isClickedOnTitle = event.target.closest('.card-title');
+
+            // Не реагируем на клики по кнопкам
+            if (event.target.classList.contains('btn')) return;
+
+            // Если клик по заголовку — сворачиваем/разворачиваем
+            if (isClickedOnTitle) {
+                card.classList.toggle('collapsed');
+            }
+        });
+    });
+</script>
+
+{% endblock %}
+
+<!-- Первая карточка -->
+<div class="card">
+    <h2 class="card-title">Карточка 1</h2>
+    <div class="card-content">
+        <div class="button-group">
+            <button class="btn btn-primary">Кнопка 1</button>
+            <button class="btn btn-secondary">Кнопка 2</button>
+        </div>
+        <div class="table-container">
+            <table class="card-table">
+                <thead>
+                    <tr>
+                        <th>Заголовок 1</th>
+                        <th>Заголовок 2</th>
+                        <th>Заголовок 3</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Пример строк -->
+                    {% for i in 1..5 %}
+                    <tr>
+                        <td>Данные {{ i }}</td>
+                        <td>Данные {{ i }}</td>
+                        <td>Данные {{ i }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
 
 
-<!--Подключаем стили-->
-<link rel="stylesheet" href="{% static 'css/store.css' %}">
-{% endblock %}
+
+
+
+<!--<div class="card">
+    <div class="card-header">
+        <a href="{% url 'store:dispatch-list' %}" class="action-btn">Расходы</a>
+    </div>
+</div>-->
+<!--<a href="{% url 'store:receipts-list' %}" class="button">Приходы</a>
+<a href="{% url 'store:dispatch-list' %}" class="button">Расходы</a>
+<a href="{% url 'store:store-list' %}" class="button">Склад</a>
+{% if user.role == 'superadmin' or user.role == 'admin' %}
+<a href="{% url 'store:suppliers-list' %}" class="button">Поставщики</a>
+{% endif %}
+<a href="{% url 'core:start-page' %}" class="button">Главная</a>-->

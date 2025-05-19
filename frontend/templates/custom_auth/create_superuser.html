@@ -1,25 +1,25 @@
-﻿{% extends "base.html" %}
+﻿{% extends "login_base.html" %}
 
 {% block content %}
-<div class="login-form">
-    <h2>Создание суперпользователя</h2>
-    <form method="post">
-        {% csrf_token %}
-        <p class="{% if form.errors %}error{% endif %}">
-            <label>Username:</label>
-            <input type="text" name="username" required>
-        </p>
-        <p class="{% if form.errors %}error{% endif %}">
-            <label>Email:</label>
-            <input type="email" name="email">
-        </p>
-        <p class="{% if form.errors %}error{% endif %}">
-            <label>Password:</label>
-            <input type="password" name="password" required>
-        </p>
-
-        <button type="submit" class="login-button">Войти</button>
-    </form>
+{% csrf_token %}
+<h2>Создание суперпользователя</h2>
+<div class="input-group">
+    <p class="{% if form.errors %}error{% endif %}">
+        <label>Username:</label>
+        <input type="text" name="username" required>
+    </p>
 </div>
-
+<div class="input-group">
+    <p class="{% if form.errors %}error{% endif %}">
+        <label>Email:</label>
+        <input type="email" name="email">
+    </p>
+</div>
+<div class="input-group">
+    <p class="{% if form.errors %}error{% endif %}">
+        <label>Password:</label>
+        <input type="password" name="password" required>
+    </p>
+</div>
+<button type="submit" class="primary-button">Создать</button>
 {% endblock %}

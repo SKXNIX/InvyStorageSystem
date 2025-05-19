@@ -1,108 +1,89 @@
-{% extends "base.html" %}
-{% load static %}
+{% extends "master.html" %}
+
+{% block bar_content %}
+<div class="search-bar">
+    <div>
+        <a href="{% url 'products:list' %}" class="btn-return">⮜ Назад</a>
+    </div>
+    <div class="search-input">
+
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+        </svg>
+        <input type="text" placeholder="Search...">
+    </div>
+</div>
+<!-- Приветственное сообщение -->
+<div style="padding-top: 0px" class="page-header">
+    <h2>Панель управления категориями</h2>
+    <p>Здесь вы можете управлять категориями</p>
+</div>
+{% endblock %}
+
+
 
 {% block content %}
-<div class="container mt-4">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2>Управление категориями</h2>
-        <a href="{% url 'products:category_create' %}" class="btn btn-add-category">
-            <i class="fas fa-plus-circle me-2"></i> Добавить категорию
-        </a>
-    </div>
-
-    <!-- Таблица категорий -->
-    <div class="card shadow-sm border-0">
-        <div class="card-body p-0">
-            <table class="table table-categories">
-                <thead>
-                    <tr>
-                        <th>Название</th>
-                        <th class="text-end">Действия</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for category in categories %}
-                    <tr>
-                        <td>{{ category.name }}</td>
-                        <td class="text-end">
-                            <a href="{% url 'products:category_edit' category.pk %}" class="btn btn-sm btn-edit">
-                                <i class="fas fa-pencil-alt"></i>
-                            </a>
-                            <a href="{% url 'products:category_delete' category.pk %}" class="btn btn-sm btn-delete ms-2">
-                                <i class="fas fa-trash-alt"></i>
-                            </a>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+<div class="container">
+    <!-- Товары -->
+    <div style="cursor:initial" class="tcard">
+        <h2 class="card-title">Список товаров</h2>
+        <div class="card-content">
+            <div class="button-group">
+                <a href="{% url 'products:category_create' %}" class="action-btn">Добавить категорию</a>
+            </div>
+            <div class="table-container">
+                <table class="table-card">
+                    <thead>
+                        <tr>
+                            <th>Название</th>
+                            <th>Действия</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for category in categories %}
+                        <tr>
+                            <td>{{ category.name }}</td>
+                            <td>
+                                <a href="{% url 'products:category_edit' category.pk %}" class="btn btn-sm btn-outline-secondary">✏️</a>
+                                <a href="{% url 'products:category_delete' category.pk %}" class="btn btn-sm btn-outline-danger">🗑️</a>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr><td colspan="2">Нет категорий</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>
-
-<style>
-    /* Стиль кнопки "Добавить категорию" */
-    .btn-add-category {
-        background-color: #4CAF50; /* Зеленый цвет */
-        color: white;
-        border: none;
-        border-radius: 8px;
-        padding: 10px 20px;
-        font-size: 16px;
-        font-weight: 500;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        transition: all 0.3s ease;
-        display: inline-flex;
-        align-items: center;
-    }
-    
-    .btn-add-category:hover {
-        background-color: #3e8e41;
-        transform: translateY(-2px);
-        box-shadow: 0 4px 8px rgba(0,0,0,0.15);
-        color: white;
-        text-decoration: none;
-    }
-    
-    .btn-add-category i {
-        font-size: 18px;
-    }
-    
-    /* Стили таблицы */
-    .table-categories {
-        width: 100%;
-        border-collapse: collapse;
-    }
-    
-    .table-categories th {
-        background-color: #f8f9fa;
-        padding: 12px 16px;
-        text-align: left;
-        border-bottom: 2px solid #dee2e6;
-        font-weight: 600;
-    }
-    
-    .table-categories td {
-        padding: 12px 16px;
-        border-bottom: 1px solid #e9ecef;
-        vertical-align: middle;
-    }
-    
-    .table-categories tr:hover {
-        background-color: #f8f9fa;
-    }
-    
-    /* Кнопки действий */
-    .btn-edit {
-        color: #2196F3;
-        border: 1px solid #2196F3;
-        border-radius: 6px;
-    }
-    
-    .btn-delete {
-        color: #f44336;
-        border: 1px solid #f44336;
-        border-radius: 6px;
-    }
-</style>
 {% endblock %}
+
+
+
+
+<a href="{% url 'products:list' %}" class="button" style="padding: 0.2rem 0.35rem; margin-bottom: 1rem; display: inline-block; font-size: 12px;">
+    <i class="fas fa-arrow-left"></i> Назад
+</a>
+<h2>Управление категориями</h2>
+<a href="{% url 'products:category_create' %}" class="button" style="padding: 0.4rem 0.4rem; margin-bottom: 0.1rem; display: inline-block; font-size: 14px;">Добавить категорию</a>
+
+<table class="table mt-3">
+    <thead>
+        <tr>
+            <th>Название</th>
+            <th>Действия</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for category in categories %}
+        <tr>
+            <td>{{ category.name }}</td>
+            <td>
+                <a href="{% url 'products:category_edit' category.pk %}" class="btn btn-sm btn-outline-secondary">✏️</a>
+                <a href="{% url 'products:category_delete' category.pk %}" class="btn btn-sm btn-outline-danger">🗑️</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>

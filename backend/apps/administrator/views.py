@@ -60,7 +60,7 @@ class UserCreateView(CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['action'] = 'Создание'
+        context['action'] = 'создания'
         return context
 
     def form_valid(self, form):
@@ -111,13 +111,18 @@ class DeleteSelectedUsersView(RoleRequiredMixin, FormView):
 
     def post(self, request):
         selected_users = request.POST.getlist('selected_users')
-        if selected_users:
-            selected_users = list(map(int, selected_users))
-            CustomUser.objects.filter(id__in=selected_users).delete()
-            messages.success(request, "Выбранные пользователи удалены")
-        else:
+        if not selected_users:
             messages.warning(request, "Нет выбранных пользователей")
-        return HttpResponseRedirect(reverse_lazy('admin:users'))
+            return JsonResponse({'success': False, 'message': 'Нет выбранных пользователей'}, status=400)
+
+        try:
+            user_ids = list(map(int, selected_users))
+            CustomUser.objects.filter(id__in=user_ids).delete()
+            messages.success(request, "Выбранные пользователи удалены")
+            return JsonResponse({'success': True})
+        except (ValueError, CustomUser.DoesNotExist) as e:
+            messages.warning(request, f"Ошибка при удалении пользователей {e}")
+            return JsonResponse({"success": False, "message": f"Ошибка при удалении {e}"}, status=400)
 
 class PasswordResetView(RoleRequiredMixin, FormView):
     """Представление: сброс пароля пользователя"""

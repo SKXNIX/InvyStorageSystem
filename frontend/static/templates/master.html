@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invy</title>
+    {% load static %}
+    <!--Подключаем стили-->
+    <link rel="stylesheet" href="{% static 'css/master.css' %}">
+</head>
+<body>
+    <!-- Шапка -->
+    <div class="header">
+        <div class="logo" id="homeLink">
+            <img src="{% static 'images/logo2.svg' %}" alt="Logo">
+            <span>Invy</span>
+        </div>
+        <ul class="nav-tabs">
+            <!-- Главная -->
+            <li>
+                <a {% if request.path == '/' %}
+                   class="active"
+                   {% endif %}
+                   href="/">Главная</a>
+            </li>
+
+            <!-- Операции -->
+            <li>
+                <a {% if request.path == '/store/' or request.path == "/store/add-receipt/" or request.path == "/store/add-dispatch/" %}
+                   class="active"
+                   {% endif %}
+                   href="{% url 'store:store-settings' %}">Операции</a>
+            </li>
+
+            <!-- Товары -->
+            <li>
+            <a {% if request.path == '/products/' or request.path == "/products/new/" or request.path == "/products/categories/" or request.path == "/products/categories/new/" %}
+               class="active"
+               {% endif %}
+               href="{% url 'products:list' %}">Товары</a>
+            </li>
+
+            <!-- Поставщики -->
+            <li>
+            <a {% if request.path == '/store/suppliers-list/' or request.path == '/store/add-supplier/'%}
+               class="active"
+               {% endif %}
+               href="{% url 'store:suppliers-list' %}">Поставщики</a>
+            </li>
+
+            <!-- Отчеты -->
+            <li><a href="#">Отчеты</a></li>
+
+            <!-- Администрирование -->
+            {% if user.role == 'superadmin' %}
+            <li>
+                <a {% if request.path == '/admin-panel/' or request.path == '/admin-panel/users/' or request.path == '/admin-panel/users/import-users/'%}
+                   class="active"
+                   {% endif %}
+                   href="{% url 'admin:admin-panel' %}">Администрирование</a>
+            </li>
+            {% endif %}
+        </ul>
+        <div class="user-profile">
+            <form id="logoutForm" action="{% url 'auth:logout' %}" method="post">
+                {% csrf_token %}
+            </form>
+            <img id="logoutImg" src="{% static 'images/logout2.svg' %}" alt="logout">
+        </div>
+    </div>
+
+    <!-- Поиск и фильтры -->
+    {% block bar_content %}
+    {% block bar %}{% endblock %}
+    {% endblock %}
+
+    {% with content=block.super %}
+    {% if content %}
+    <div class="search-bar">
+        <div class="search-input">
+            {{ content }}
+        </div>
+        <!--div class="pagination"-->
+    </div>
+    {% endif %}
+    {% endwith %}
+
+    <!-- Основной контент -->
+    <div class="main-content">
+        {% block content %}{% endblock %}
+    </div>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <p>© 2025 INVY: Система управления складом. Все права защищены.</p>
+        </div>
+    </footer>
+
+</body>
+</html>
+
+<!-- Выход -->
+<script>
+    document.getElementById('logoutImg').addEventListener('click', function () {
+        document.getElementById('logoutForm').submit();
+    });
+</script>
+<!-- Главная -->
+<script>
+    document.getElementById('homeLink').addEventListener('click', function () {
+        window.location.href = '{% url "core:start-page" %}';
+    });
+</script>

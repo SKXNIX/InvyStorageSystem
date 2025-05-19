@@ -1,6 +1,48 @@
-{% extends "base.html" %}
+{% extends "master.html" %}
+{% load static %}
+
+
+{% block bar_content %}
+<div style="padding-top: 0px" class="page-header">
+    <h2>Форма {% if form.instance.pk %}редактирования{% else %}добавления{% endif %} категории</h2>
+    <p>Здесь вы можете управлять категориями</p>
+</div>
+{% endblock %}
 
 {% block content %}
+<div style="max-width: max-content; max-height: min-content" class="card">
+    <div class="card-header">
+        <div class="card-title">Добавление поступления</div>
+    </div>
+    <div class="card-body">
+        <div class="frm">
+            <form method="post">
+                {% csrf_token %}
+
+                <div class="frm-group">
+                    <div>
+                        <label>Название:</label>
+                        {{ form.name }}
+                    </div>
+
+                    <div class="frm-group-button">
+                        <button class="btn-xm btn-primary" type="submit">Сохранить</button>
+                        <a href="{% url 'products:category_list' %}" class="btn-xm">Отменить</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="chart">
+            <!-- График -->
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+
+
+
 <h2>{% if form.instance.pk %}Редактирование{% else %}Добавление{% endif %} категории</h2>
 <form method="post">
     {% csrf_token %}
@@ -11,4 +53,3 @@
     <button type="submit" class="btn btn-primary">Сохранить</button>
     <a href="{% url 'products:category_list' %}" class="btn btn-secondary">Отмена</a>
 </form>
-{% endblock %}

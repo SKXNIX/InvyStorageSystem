@@ -3,13 +3,14 @@
     "",
     "\\backend",
     "\\backend\\apps",
-    "\\backend\\apps\\administrator",
-    "\\backend\\apps\\core",
     "\\backend\\apps\\custom_auth",
-    "\\backend\\apps\\products",
-    "\\backend\\apps\\store",
-    "\\frontend"
+    "\\backend\\config\\settings",
+    "\\frontend",
+    "\\frontend\\static",
+    "\\frontend\\static\\css",
+    "\\frontend\\static\\images",
+    "\\frontend\\static\\templates"
   ],
-  "SelectedNode": "\\backend\\apps\\store\\urls.py",
+  "SelectedNode": "\\frontend\\static\\css\\login.css",
   "PreviewInSolutionExplorer": false
 }

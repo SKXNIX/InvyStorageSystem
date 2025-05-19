@@ -6,5 +6,5 @@ app_name = 'core'
 
 urlpatterns = [
     #path('', login_required(views.IndexView.as_view()), name='index'), 
-    path('', views.StartPage, name='start-page'),   # Временная стартовая страница
+    path('', views.StartPage, name='start-page'),   # пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 ]

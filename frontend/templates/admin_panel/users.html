@@ -1,80 +1,168 @@
-﻿{% extends "base.html" %}
-{% load static %}
+﻿{% extends "master.html" %}
+
+{% block bar_content %}
+<!-- Приветственное сообщение -->
+<div class="page-header">
+    <div>
+        <a href="{% url 'admin:admin-panel' %}" class="btn-return">⮜ Назад</a>
+    </div>
+    <h2>Панель управления пользователями</h2>
+    <p>Здесь вы можете управлять учетными записями пользователей</p>
+</div>
+{% endblock %}
+
 
 {% block content %}
+
+<div class="container">
+    <!-- Пользователи -->
+    <div style="cursor:initial" class="tcard">
+        <h2 class="card-title">Список пользователей</h2>
+        <div class="card-content">
+            <div class="button-group">
+                <a href="{% url 'admin:user-create' %}" class="action-btn">Создать пользователя</a>
+                <a href="{% url 'admin:import-users' %}" class="action-btn">Импорт из Excel</a>
+                <button class="btn-xm btn-primary delete-selected" style="display: none;"
+                        onclick="return confirm('Удалить выбранных пользователей?')">
+                    Удалить выбранных
+                </button>
+            </div>
+            <div class="table-container">
+                <table class="table-card">
+                    <thead>
+                        <tr>
+                            <th><input type="checkbox" id="select-all"></th>
+                            <th>
+                                <a href="?sort_by=id&order={% if sort_by == 'id' and order == 'asc' %}desc{% else %}asc{% endif %}">
+                                    ID
+                                    <span class="sort-icon {% if sort_by == 'id' %}active {{ order }}{% endif %}"></span>
+                                </a>
+                            </th>
+                            <th>
+                                <a href="?sort_by=full_name&order={% if sort_by == 'full_name' and order == 'asc' %}desc{% else %}asc{% endif %}">
+                                    ФИО
+                                    <span class="sort-icon {% if sort_by == 'full_name' %}active {{ order }}{% endif %}"></span>
+                                </a>
+                            </th>
+                            <th>
+                                <a href="?sort_by=role&order={% if sort_by == 'role' and order == 'asc' %}desc{% else %}asc{% endif %}">
+                                    Роль
+                                    <span class="sort-icon {% if sort_by == 'role' %}active {{ order }}{% endif %}"></span>
+                                </a>
+                            </th>
+                            <th>
+                                <a href="?sort_by=created_at&order={% if sort_by == 'created_at' and order == 'asc' %}desc{% else %}asc{% endif %}">
+                                    Дата создания
+                                    <span class="sort-icon {% if sort_by == 'created_at' %}active {{ order }}{% endif %}"></span>
+                                </a>
+                            </th>
+                            <th>Действия</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% with has_users=False %}
+                        {% for user in users %}
+                        {% if not user.is_superuser %}
+                        {% with has_users=True %}
+                        {% endwith %}
+                        <!-- Вывод строки -->
+                        <tr>
+                            <td><input type="checkbox" name="selected_users" value="{{ user.id }}"></td>
+                            <td>{{ user.id }}</td>
+                            <td>{{ user.full_name }}</td>
+                            <td>{{ user.role }}</td>
+                            <td>{{ user.created_at }}</td>
+                            <td>
+                                <a href="{% url 'admin:user-update' user.id %}" class="btn btn-sm btn-warning">Изменить</a>
+                                <a href="{% url 'admin:user-delete' user.id %}" class="btn btn-sm btn-danger">Удалить</a>
+                            </td>
+                        </tr>
+                        {% endif %}
+                        {% endfor %}
+
+                        {% if  has_users %}
+                        <tr><td colspan="6">Нет пользователей</td></tr>
+                        {% endif %}
+                        {% endwith %}
+                    </tbody>
+                </table>
+            </div>
+            <!-- JavaScript для выбора всех -->
+            <script>
+                document.getElementById('select-all').addEventListener('change', function () {
+                    const checkboxes = document.querySelectorAll('input[name="selected_users"]');
+                    checkboxes.forEach(cb => cb.checked = this.checked);
+                });
+            </script>
+
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    const deleteButton = document.querySelector('.delete-selected');
+                    const checkboxes = document.querySelectorAll('input[name="selected_users"]');
+                    const selectAll = document.getElementById('select-all');
+
+                    function updateDeleteButton() {
+                        const hasChecked = Array.from(checkboxes).some(cb => cb.checked);
+                        deleteButton.style.display = hasChecked ? 'inline-block' : 'none';
+                    }
+
+                    checkboxes.forEach(cb => cb.addEventListener('change', updateDeleteButton));
+                    selectAll.addEventListener('change', updateDeleteButton);
+                    updateDeleteButton();
+
+                    deleteButton.addEventListener('click', function (e) {
+                        e.preventDefault();
+
+                        const selected = Array.from(checkboxes)
+                            .filter(cb => cb.checked)
+                            .map(cb => cb.value);
+
+                        if (selected.length === 0) return;
+
+                        // Формируем параметры вида
+                        const body = selected.map(id => `selected_users=${id}`).join('&');
+
+                        fetch("{% url 'admin:delete-selected-users' %}", {
+                            method: 'POST',
+                            headers: {
+                                'X-CSRFToken': '{{ csrf_token }}',
+                                'Content-Type': 'application/x-www-form-urlencoded'
+                            },
+                            body: body
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                location.reload();
+                            } else {
+                                alert(data.message || 'Ошибка удаления');
+                            }
+                        })
+                        .catch(error => console.error('Ошибка:', error));
+                    });
+                });
+            </script>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+
+
+
+<a href="{% url 'administrator:admin-panel' %}" class="button" style="padding: 0.2rem 0.35rem; margin-bottom: 1rem; display: inline-block; font-size: 12px;">
+    <i class="fas fa-arrow-left"></i> Назад
+</a>
+
 <h2>Список пользователей</h2>
 
 <!-- Блок с кнопками -->
 <div class="d-flex mb-3">
-    <a href="{% url 'admin:user-create' %}" class="btn btn-primary me-2">Создать пользователя</a>
-    <a href="{% url 'admin:import-users' %}" class="btn btn-primary me-2">Импорт из Excel</a>
+    <a href="{% url 'admin:user-create' %}" class="button" style="padding: 0.4rem 0.4rem; margin-bottom: 0.1rem; display: inline-block; font-size: 14px;">Создать пользователя</a>
+    <a href="{% url 'admin:import-users' %}" class="button" style="padding: 0.4rem 0.4rem; margin-bottom: 0.1rem; display: inline-block; font-size: 14px;">Импорт из Excel</a>
 </div>
 
 <!-- Форма для массового удаления -->
 <form id="delete-selected-form" method="post" action="{% url 'admin:delete-selected-users' %}" class="d-none">
-    {% csrf_token %}
-    <button type="submit" class="btn btn-primary" onclick="return confirm('Удалить выбранных пользователей?')">Удалить выбранных</button>
-    <!-- Таблица -->
-    <table class="table-excel">
-        <thead>
-            <tr>
-                <th><input type="checkbox" id="select-all"></th>
-                <th>
-                    <a href="?sort_by=id&order={% if sort_by == 'id' and order == 'asc' %}desc{% else %}asc{% endif %}">
-                        ID
-                        <span class="sort-icon {% if sort_by == 'id' %}active {{ order }}{% endif %}"></span>
-                    </a>
-                </th>
-                <th>
-                    <a href="?sort_by=full_name&order={% if sort_by == 'full_name' and order == 'asc' %}desc{% else %}asc{% endif %}">
-                        ФИО
-                        <span class="sort-icon {% if sort_by == 'full_name' %}active {{ order }}{% endif %}"></span>
-                    </a>
-                </th>
-                <th>
-                    <a href="?sort_by=role&order={% if sort_by == 'role' and order == 'asc' %}desc{% else %}asc{% endif %}">
-                        Роль
-                        <span class="sort-icon {% if sort_by == 'role' %}active {{ order }}{% endif %}"></span>
-                    </a>
-                </th>
-                <th>
-                    <a href="?sort_by=created_at&order={% if sort_by == 'created_at' and order == 'asc' %}desc{% else %}asc{% endif %}">
-                        Дата создания
-                        <span class="sort-icon {% if sort_by == 'created_at' %}active {{ order }}{% endif %}"></span>
-                    </a>
-                </th>
-                <th>Действия</th>
-            </tr>
-        </thead>
-        <tbody id="user-tbody">
-            {% for user in users %}
-            {% if not user.is_superuser %}
-            <tr>
-                <td><input type="checkbox" name="selected_users" value="{{ user.id }}"></td>
-                <td>{{ user.id }}</td>
-                <td>{{ user.full_name }}</td>
-                <td>{{ user.role }}</td>
-                <td>{{ user.created_at }}</td>
-                <td>
-                    <a href="{% url 'admin:user-update' user.id %}" class="btn btn-sm btn-warning">Изменить</a>
-                    <a href="{% url 'admin:user-delete' user.id %}" class="btn btn-sm btn-danger">Удалить</a>
-                </td>
-            </tr>
-            {% endif %}
-            {% empty %}
-            <tr><td colspan="5">Нет пользователей</td></tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</form>
-<!-- JavaScript для выбора всех -->
-<script>
-    document.getElementById('select-all').addEventListener('change', function () {
-        const checkboxes = document.querySelectorAll('input[name="selected_users"]');
-        checkboxes.forEach(cb => cb.checked = this.checked);
-    });
-</script>
-
-<!--Подключаем стили-->
-<link rel="stylesheet" href="{% static 'css/admin.css' %}">
-{% endblock %}
+    {% csrf_token %}</form>

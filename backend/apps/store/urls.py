@@ -5,7 +5,7 @@ import apps.store.views as views
 app_name = 'store'
 
 urlpatterns = [
-    path('', views.store_page, name='store-settings'),    # Панель управления складом
+    path('', views.store_page, name='store-settings'),    # пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 
     path('places/', views.PlaceListView.as_view(), name='place-list'),
     path('places/<int:pk>/', views.PlaceDetailView.as_view(), name='place-detail'),

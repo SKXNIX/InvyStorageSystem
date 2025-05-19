@@ -1,112 +1,103 @@
-{% extends 'base.html' %}
+{% extends "master.html" %}
 {% load static %}
 
+
+{% block bar_content %}
+<div style="padding-top: 0px" class="page-header">
+    <h2>Форма {% if form.instance.pk %}редактирования{% else %}добавления{% endif %} товара</h2>
+    <p>Здесь вы можете управлять товарами</p>
+</div>
+{% endblock %}
+
+
 {% block content %}
-<div class="container mt-4">
-    <div class="card shadow-sm">
-        <div class="card-header bg-primary text-white">
-            <h4 class="mb-0">
-                {% if form.instance.pk %}Редактирование товара{% else %}Добавление товара{% endif %}
-            </h4>
-        </div>
-        <div class="card-body">
-            <form method="post" novalidate>
+<div style="max-width: max-content; max-height: min-content" class="card">
+    <div class="card-header">
+        <div class="card-title">Добавление товара</div>
+    </div>
+    <div class="card-body">
+        <div class="frm">
+            <form method="post">
                 {% csrf_token %}
-                
-                {% if form.non_field_errors %}
-                    <div class="alert alert-danger">
-                        {% for error in form.non_field_errors %}
-                            {{ error }}
-                        {% endfor %}
-                    </div>
-                {% endif %}
-                
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="mb-3">
-                            <label for="{{ form.name.id_for_label }}" class="form-label">
-                                <i class="fas fa-tag me-2"></i>{{ form.name.label }}
-                            </label>
+                <div class="frm-grid">
+                    <div class="frm-group">
+                        <div>
+                            <label>Наименование:</label>
                             {{ form.name }}
-                            {% for error in form.name.errors %}
-                                <div class="invalid-feedback d-block">{{ error }}</div>
-                            {% endfor %}
                         </div>
-                        
-                        <div class="mb-3">
-                            <label for="{{ form.category.id_for_label }}" class="form-label">
-                                <i class="fas fa-tags me-2"></i>{{ form.category.label }}
-                            </label>
+
+                        <div>
+                            <label>Категория:</label>
                             {{ form.category }}
-                            {% for error in form.category.errors %}
-                                <div class="invalid-feedback d-block">{{ error }}</div>
-                            {% endfor %}
                         </div>
-                        
-                        <div class="mb-3">
-                            <label for="{{ form.unit.id_for_label }}" class="form-label">
-                                <i class="fas fa-balance-scale me-2"></i>{{ form.unit.label }}
-                            </label>
+                    </div>
+
+
+                    <div class="frm-group">
+                        <div>
+                            <label>Единица измерения:</label>
                             {{ form.unit }}
-                            {% for error in form.unit.errors %}
-                                <div class="invalid-feedback d-block">{{ error }}</div>
-                            {% endfor %}
+                        </div>
+
+                        <div>
+                            <label>Описание:</label>
+                            {{ form.description }}
                         </div>
                     </div>
-                    
-                    <div class="col-md-6">
-                        <div class="mb-3">
-                            <label for="{{ form.location.id_for_label }}" class="form-label">
-                                <i class="fas fa-warehouse me-2"></i>{{ form.location.label }}
-                            </label>
+
+
+                    <div class="frm-group">
+                        <div>
+                            <label>Место хранения:</label>
                             {{ form.location }}
-                            {% for error in form.location.errors %}
-                                <div class="invalid-feedback d-block">{{ error }}</div>
-                            {% endfor %}
                         </div>
-                        
-                        <div class="mb-3">
-                            <label for="{{ form.quantity.id_for_label }}" class="form-label">
-                                <i class="fas fa-boxes me-2"></i>Количество
-                            </label>
-                            {{ form.quantity }}
-                            {% for error in form.quantity.errors %}
-                                <div class="invalid-feedback d-block">{{ error }}</div>
-                            {% endfor %}
-                        </div>
-                        
-                        <div class="mb-3">
-                            <label for="{{ form.min_stock.id_for_label }}" class="form-label">
-                                <i class="fas fa-exclamation-triangle me-2"></i>{{ form.min_stock.label }}
-                            </label>
+
+                        <div>
+                            <label>Минимальный остаток:</label>
                             {{ form.min_stock }}
-                            {% for error in form.min_stock.errors %}
-                                <div class="invalid-feedback d-block">{{ error }}</div>
-                            {% endfor %}
                         </div>
                     </div>
-                </div>
-                
-                <div class="mb-3">
-                    <label for="{{ form.description.id_for_label }}" class="form-label">
-                        <i class="fas fa-align-left me-2"></i>{{ form.description.label }}
-                    </label>
-                    {{ form.description }}
-                    {% for error in form.description.errors %}
-                        <div class="invalid-feedback d-block">{{ error }}</div>
-                    {% endfor %}
-                </div>
-                
-                <div class="d-flex justify-content-end mt-4">
-                    <a href="{% url 'products:list' %}" class="btn btn-secondary me-2">
-                        <i class="fas fa-times me-1"></i> Отмена
-                    </a>
-                    <button type="submit" class="btn btn-primary">
-                        <i class="fas fa-save me-1"></i> Сохранить
-                    </button>
+
+
+                    <div class="frm-group">
+                        <div class="frm-group-button">
+                            <button class="btn-xm btn-primary" type="submit">Сохранить</button>
+                            <a href="{% url 'products:list' %}" class="btn-xm">Отменить</a>
+                        </div>
+                    </div>
                 </div>
             </form>
+        </div>
+        <div class="chart">
+            <!-- График -->
         </div>
     </div>
 </div>
 {% endblock %}
+
+
+<h2>{% if form.instance.pk %}Редактирование{% else %}Добавление{% endif %} товара</h2>
+<form method="post">
+    {% csrf_token %}
+    <div class="form-group">
+
+    </div>
+    <div class="form-group">
+
+    </div>
+    <div class="form-group">
+
+    </div>
+    <div class="form-group">
+
+    </div>
+    <div class="form-group">
+        <label>Место хранения:</label>
+        {{ form.location }}
+    </div>
+    <div class="form-group">
+
+    </div>
+    <button type="submit" class="btn btn-primary">Сохранить</button>
+    <a href="{% url 'products:list' %}" class="btn btn-secondary">Отмена</a>
+</form>

@@ -1,57 +1,61 @@
-﻿{% extends "base.html" %}
+﻿{% extends "master.html" %}
 {% load static %}
 
-{% block content %}
+{% block bar_content %}
 <!-- Приветственное сообщение -->
-<div class="welcome-section p-4 mb-4 bg-light rounded-3">
-    <h1 class="display-5 fw-bold">Добро пожаловать в WH-Helper!</h1>
-    <p class="lead">Система управления складом для эффективного отслеживания товаров и операций.</p>
+<div class="page-header">
+    <h2>Добро пожаловать в Invy</h2>
+    <p>Система управления складом для эффективного отслеживания товаров и операций.</p>
 </div>
+{% endblock %}
+
 
 <!-- Краткий обзор остатков -->
-<div class="row row-cols-1 row-cols-md-3 g-4 mb-4">
-    <!-- Общее количество товаров -->
-    <div class="col">
-        <div class="card h-100 border-primary">
-            <div class="card-body text-center">
-                <h5 class="card-title">Общее количество товаров</h5>
-                <p class="display-4 fw-bold">{{ total_stock }}</p>
-                <small>на складе</small>
-            </div>
-        </div>
+{% block content %}
+<!-- Общее количество товаров -->
+<div class="card">
+    <div class="card-header">
+        <div style="color: green" class="card-title">Общее количество товаров</div>
     </div>
-
-    <!-- Минимальные остатки -->
-    <div class="col">
-        <div class="card h-100 border-warning">
-            <div class="card-body text-center">
-                <h5 class="card-title">Товары с низкими остатками</h5>
-                <p class="display-4 fw-bold">{{ low_stock_count }}</p>
-                <small>товаров требуют пополнения</small>
-            </div>
-        </div>
-    </div>
-
-    <!-- Критические остатки -->
-    <div class="col">
-        <div class="card h-100 border-danger">
-            <div class="card-body text-center">
-                <h5 class="card-title">Критические остатки</h5>
-                <p class="display-4 fw-bold">{{ critical_stock_count }}</p>
-                <small>товаров требуют срочного заказа</small>
-            </div>
+    <div class="card-body">
+        <div class="metrics">
+            <div class="card-number">100500</div>
+            <div>на складе</div>
         </div>
     </div>
 </div>
-
-<!-- Ссылки на основные разделы -->
-<div class="d-grid gap-3">
-    {% if user.role == 'admin' or user.role == 'superadmin' %}
-    <a href="{% url 'store:store-settings' %}" class="button">Управление складом</a>
-    {% endif %}
-    <a href="{% url 'products:list' %}" class="button">Управление товарами</a>
-    {% if user.role == 'superadmin' %}
-    <a href="{% url 'admin:admin-panel' %}" class="button">Админ-панель</a>
-    {% endif %}
+<!-- Минимальные остатки -->
+<div class="card">
+    <div class="card-header">
+        <div style="color: orange" class="card-title">Товары с низкими остатками</div>
+    </div>
+    <div class="card-body">
+        <div class="metrics">
+            <div class="card-number">100</div>
+            <div>на складе</div>
+        </div>
+    </div>
 </div>
+<!-- Критические остатки -->
+<div class="card">
+    <div class="card-header">
+        <div style="color: orangered" class="card-title">Критические остатки</div>
+    </div>
+    <div class="card-body">
+        <div class="metrics">
+            <div class="card-number">10</div>
+            <div>товаров требуют срочного заказа</div>
+        </div>
+    </div>
+</div>
+<!--&lt;!&ndash; Ссылки на основные разделы &ndash;&gt;-->
+<!--<div class="d-grid gap-3">-->
+<!--    {% if user.role == 'admin' or user.role == 'superadmin' %}-->
+<!--    <a href="{% url 'store:store-settings' %}" class="button">Управление складом</a>-->
+<!--    {% endif %}-->
+<!--    <a href="{% url 'products:list' %}" class="button">Управление товарами</a>-->
+<!--    {% if user.role == 'superadmin' %}-->
+<!--    <a href="{% url 'admin:admin-panel' %}" class="button">Админ-панель</a>-->
+<!--    {% endif %}-->
+<!--</div>-->
 {% endblock %}

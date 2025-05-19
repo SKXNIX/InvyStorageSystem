@@ -1,33 +1,20 @@
-{% extends "base.html" %}
-
-{% block title %}Вход - Система управления складом{% endblock %}
+﻿{% extends "login_base.html" %}
 
 {% block content %}
-<div class="login-form">
-    <h2>Вход в систему</h2>
-    {% if form.errors %}
-        <div class="form-errors">
-            {% for error in form.non_field_errors %}
-                {{ error }}<br>
-            {% endfor %}
-            {% for field in form %}
-                {% for error in field.errors %}
-                    {{ error }}<br>
-                {% endfor %}
-            {% endfor %}
-        </div>
-    {% endif %}
-    <form method="post">
-        {% csrf_token %}
-        <p class="{% if form.errors %}error{% endif %}">
-            {{ form.username.label_tag }}
-            {{ form.username }}
-        </p>
-        <p class="{% if form.errors %}error{% endif %}">
-            {{ form.password.label_tag }}
-            {{ form.password }}
-        </p>
-        <button type="submit" class="login-button">Войти</button>
-    </form>
+{% csrf_token %}
+<h2>Вход в систему</h2>
+<div class="input-group">
+    <p class="{% if form.errors %}error{% endif %}">
+        {{ form.username.label_tag }}
+        {{ form.username }}
+    </p>
 </div>
+<div class="input-group">
+    <p class="{% if form.errors %}error{% endif %}">
+        {{ form.password.label_tag }}
+        {{ form.password }}
+    </p>
+</div>
+<button type="submit" class="primary-button">Войти</button>
 {% endblock %}
+

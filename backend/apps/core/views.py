@@ -28,11 +28,7 @@ class ProductManagementView(LoginRequiredMixin, TemplateView):
 
 @login_required
 def StartPage(request):
-    return render(request, 'core/start_page.html', 
-                  {'total_stock': 100,          # Значения для debug
-                  'low_stock_count': 15,
-                  'critical_stock_count': 5}
-                  )
+    return render(request, 'core/start_page.html' )
 
 
 
