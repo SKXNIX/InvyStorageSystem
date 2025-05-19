@@ -7,3 +7,4 @@ db.sqlite3
 /static
 .DS_Store
 .vs/".vs/slnx.sqlite" 
+".vs/" 
