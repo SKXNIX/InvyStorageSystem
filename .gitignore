@@ -6,5 +6,7 @@ db.sqlite3
 /media
 /static
 .DS_Store
-.vs/".vs/slnx.sqlite" 
+.vs/
+".vs/slnx.sqlite" 
 ".vs/" 
+
