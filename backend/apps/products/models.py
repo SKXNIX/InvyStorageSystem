@@ -3,7 +3,8 @@ from django.db.models import Q, F
 
 class Category(models.Model):
     name = models.CharField(max_length=100, unique=True)
-    
+    class Meta:
+        app_label = 'products'  
     def __str__(self):
         return self.name
 
@@ -26,6 +27,9 @@ class Product(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     
+    class Meta:
+        app_label = 'products'  # Добавьте это
+        
     def __str__(self):
         return self.name
     

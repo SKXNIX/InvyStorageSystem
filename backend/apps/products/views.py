@@ -1,7 +1,7 @@
 from django.db.models import Q, F
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import ListView
-from apps.products.models import Product, Category
+from apps.products.models import Category, Product
 from apps.products.forms import ProductForm, CategoryForm, ProductFilterForm
 from django.core.paginator import Paginator
 from django.db.models import Q

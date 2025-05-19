@@ -5,6 +5,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.views.generic import FormView, ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
 
 from apps.custom_auth.models import CustomUser
 from apps.core.mixins import RoleRequiredMixin
@@ -93,19 +94,42 @@ class DeleteSelectedReceiptsView(RoleRequiredMixin, FormView):
 @login_required
 @role_required(['superadmin','admin','storekeeper'])
 def store_page(request):
-    """"""
-    return render(request, 'store/index.html')
+    receipts_list = StockReceipt.objects.all().order_by('-receipt_date')
+    dispatches_list = Dispatch.objects.all().order_by('-dispatch_date')
+    
+    paginator_r = Paginator(receipts_list, 20)
+    paginator_d = Paginator(dispatches_list, 20)
+    
+    page_r = request.GET.get('page_r')
+    page_d = request.GET.get('page_d')
+    
+    receipts = paginator_r.get_page(page_r)
+    dispatches = paginator_d.get_page(page_d)
+    
+    context = {
+        'receipts': receipts,
+        'dispatches': dispatches,
+    }
+    return render(request, 'store/index.html', context)
 
 @login_required
 @role_required(['superadmin', 'admin','storekeeper'])
 def add_stock_receipt(request):
     if request.method == 'POST':
-        form = StockReceiptForm(request.POST)
+        form = StockReceiptForm(request.POST, user=request.user)  
         if form.is_valid():
-            form.save()
-            return redirect('store:store-settings')
+            try:
+                receipt = form.save(commit=False)
+                receipt.save() 
+                messages.success(request, "Приход успешно добавлен!")
+                return redirect('store:receipts-list')  
+            except Exception as e:
+                messages.error(request, f"Ошибка: {str(e)}")
+        else:
+            messages.error(request, "Исправьте ошибки в форме")
     else:
-        form = StockReceiptForm()
+        form = StockReceiptForm(user=request.user)
+    
     return render(request, 'store/add_receipt.html', {'form': form})
 
 
@@ -213,15 +237,18 @@ def update_supplier(request, pk):
 @role_required(['superadmin', 'admin', 'storekeeper'])
 def add_dispatch(request):
     if request.method == 'POST':
-        form = StockDispatchForm(request.POST)
+        form = StockDispatchForm(request.POST, user=request.user)  # Добавьте user
         if form.is_valid():
             try:
-                form.save()
-                return redirect('store:store-settings')
+                dispatch = form.save(commit=False)
+                dispatch.save(user=request.user)  # Сохраняем с пользователем
+                messages.success(request, "Расход успешно добавлен!")
+                return redirect('store:dispatch-list')  # Перенаправляем на список
             except ValueError as e:
                 form.add_error(None, str(e))
+                messages.error(request, str(e))
     else:
-        form = StockDispatchForm()
+        form = StockDispatchForm(user=request.user)
 
     return render(request, 'store/add_dispatch.html', {'form': form})
 
