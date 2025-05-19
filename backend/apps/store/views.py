@@ -102,11 +102,10 @@ def add_stock_receipt(request):
     if request.method == 'POST':
         form = StockReceiptForm(request.POST)
         if form.is_valid():
-            form.save(user=request.user)
-            return redirect('store:receipts-list')
+            form.save()
+            return redirect('store:store-settings')
     else:
-        form = StockReceiptForm(user=request.user)
-
+        form = StockReceiptForm()
     return render(request, 'store/add_receipt.html', {'form': form})
 
 
@@ -186,11 +185,18 @@ class SupplierListView(RoleRequiredMixin, ListView):
 @role_required(['superadmin', 'admin'])
 def add_supplier(request):
     if request.method == 'POST':
+        messages.info(request, "1")
         form = SupplierForm(request.POST)
+        messages.info(request, "2")
         if form.is_valid():
+            messages.info(request, "3")
             form.save()
+            messages.info(request, "4")
             return redirect('store:suppliers-list')
+        else:
+            messages.info(request, "5")
     else:
+        messages.info(request, "6")
         form = SupplierForm(request.POST)
     
     return render(request, 'store/supplier_form.html', {'form': form})
@@ -211,7 +217,7 @@ def add_dispatch(request):
         if form.is_valid():
             try:
                 form.save()
-                return redirect('store:dispatch-list')
+                return redirect('store:store-settings')
             except ValueError as e:
                 form.add_error(None, str(e))
     else:
@@ -331,3 +337,9 @@ class SupplierUpdateView(RoleRequiredMixin, UpdateView):
     success_url = '/store/suppliers-list/'
     context_object_name = 'supplier'
     pk_url_kwarg = 'pk'
+
+class SupplierDeleteView(RoleRequiredMixin, DeleteView):
+    model = Supplier
+    allowed_roles = ['superadmin', 'admin']
+    template_name = 'store/supplier_confirm_delete.html'
+    success_url = '/store/suppliers-list/'

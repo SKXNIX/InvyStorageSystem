@@ -10,7 +10,7 @@ class StockReceiptForm(forms.ModelForm):
     def save(self, commit=True):
         instance = super().save(commit=False)
         if commit:
-            instance.save(user=self.user)
+            instance.save()
         return instance
 
     class Meta:
@@ -56,7 +56,7 @@ class SupplierForm(forms.ModelForm):
     def save(self, commit=True):
         instance = super().save(commit=False)
         if commit:
-            instance.save(user=self.user)
+            instance.save()
         return instance
 
     class Meta:

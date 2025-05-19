@@ -49,7 +49,12 @@
             </li>
 
             <!-- Отчеты -->
-            <li><a href="#">Отчеты</a></li>
+            <li>
+            <a {% if request.path == '/reports/' %}
+               class="active"
+               {% endif %}
+               href="{% url 'reports:generate' %}">Отчеты</a>
+            </li>
 
             <!-- Администрирование -->
             {% if user.role == 'superadmin' %}

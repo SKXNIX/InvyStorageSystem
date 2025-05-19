@@ -14,7 +14,7 @@
 <!-- Приветственное сообщение -->
 <div style="padding-top: 0px" class="page-header">
     <h2>Панель управления поставщиками</h2>
-    <p>Здесь вы можете добавлять, удалять и изменять данные поставщиков</p>
+    <p>Здесь вы можете управлять данными поставщиков</p>
 </div>
 {% endblock %}
 
@@ -80,6 +80,7 @@
                             <td>{{ supplier.phone }}</td>
                             <td>
                                 <a href="{% url 'store:supplier-update' pk=supplier.id %}">Изменить</a>
+                                <a href="{% url 'store:supplier-delete' pk=supplier.id %}" class="btn btn-sm btn-danger">Удалить</a>
                             </td>
                         </tr>
                         {% empty %}

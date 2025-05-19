@@ -23,7 +23,7 @@ class ReportView(LoginRequiredMixin, FormView):
         
         if report_type == 'current_stock':
             if format == 'csv':
-                return generate_current_stock()
+                return generate_current_stock() 
             else:
                 return generate_current_stock_pdf()
         

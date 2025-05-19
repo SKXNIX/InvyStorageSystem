@@ -5,17 +5,21 @@
 {% block bar_content %}
 <div style="padding-top: 0px" class="page-header">
     <h2>Подтверждение удаления</h2>
-    <p>Вы уверены, что хотите удалить "{{ category.name }}"?</p>
 </div>
 {% endblock %}
 
 
 {% block content %}
-<form method="post">
-    {% csrf_token %}
-    <div style="width: 50%" class="frm-group-button">
-        <button class="btn-xm btn-primary" type="submit">Удалить</button>
-        <a href="{% url 'products:category_list' %}" class="btn-xm">Отменить</a>
+<div style="max-width:fit-content; max-height: fit-content" class="card">
+    <div class="card-header">
+        <div style="color: black" class="card-title">Вы уверены, что хотите удалить "{{ category.name }}"?</div>
     </div>
-</form>
+    <form method="post">
+        {% csrf_token %}
+        <div style="padding-top: 0" class="frm-group-button">
+            <button class="btn-xm btn-primary" type="submit">Удалить</button>
+            <a href="{% url 'products:category_list' %}" class="btn-xm">Отменить</a>
+        </div>
+    </form>
+</div>
 {% endblock %}

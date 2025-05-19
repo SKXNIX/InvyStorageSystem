@@ -11,8 +11,8 @@ from apps.products.models import Product
 from django.db.models import F
 
 # Регистрируем шрифт с поддержкой кириллицы
-pdfmetrics.registerFont(TTFont('DejaVuSans', '/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf'))
-pdfmetrics.registerFont(TTFont('DejaVuSans-Bold', '/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf'))
+pdfmetrics.registerFont(TTFont('DejaVuSans', 'backend/apps/reports/fonts/DejaVuSans.ttf'))
+pdfmetrics.registerFont(TTFont('DejaVuSans-Bold', 'backend/apps/reports/fonts/DejaVuSans-Bold.ttf'))
 
 def generate_pdf_response(filename, title, headers, data):
     """Генерирует PDF документ с таблицей"""

@@ -1,13 +1,33 @@
-﻿{% extends 'base.html' %}
+﻿{% extends "master.html" %}
 {% load static %}
 
-{% block content %}
-<h1>Детали поставщика: {{ supplier.name }}</h1>
 
-<!-- Навигация -->
-<a href="{% url 'store:suppliers-list' %}" class="btn-sm">
-    Назад к списку
-</a>
+{% block bar_content %}
+<!-- Приветственное сообщение -->
+<div class="page-header">
+    <div>
+        <a href="{% url 'store:suppliers-list' %}" class="btn-return">⮜ Назад</a>
+    </div>
+    <h2>Детали поставщика: {{ supplier.name }}</h2>
+</div>
+{% endblock %}
+
+
+{% block content %}
+
+
+<div style="max-width:fit-content; max-height: fit-content" class="card">
+    <div class="card-body">
+        <p>contact_person: {{ supplier.contact_person }}</p>
+        <p>email: {{ supplier.email }}</p>
+        <p>phone: {{ supplier.phone }}</p>
+        <p>address: {{ supplier.address }}</p>
+        <p>website: {{ supplier.website }}</p>
+        <p>notes: {{ supplier.notes }}</p>
+    </div>
+</div>
+
+{% endblock %}
 
 <!-- Основные поля -->
 <div class="">
@@ -23,7 +43,3 @@
     </div>
 </div>
 
-
-<!-- Подключаем стили -->
-<link rel="stylesheet" href="{% static 'css/store.css' %}">
-{% endblock %}

@@ -12,13 +12,13 @@
 {% block content %}
 <div style="max-width:fit-content; max-height: fit-content" class="card">
     <div class="card-header">
-        <div style="color: black" class="card-title">Вы уверены, что хотите удалить "{{ product.name }}"?</div>
+        <div style="color: black" class="card-title">Вы уверены, что хотите удалить "{{ supplier.name }}"?</div>
     </div>
     <form method="post">
         {% csrf_token %}
         <div style="padding-top: 0" class="frm-group-button">
             <button class="btn-xm btn-primary" type="submit">Удалить</button>
-            <a href="{% url 'products:list' %}" class="btn-xm">Отменить</a>
+            <a href="{% url 'store:suppliers-list' %}" class="btn-xm">Отменить</a>
         </div>
     </form>
 </div>
