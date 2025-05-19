@@ -3,6 +3,14 @@
   "WorkspaceRootPath": "C:\\Users\\Artur\\source\\dbgrepos\\WH-Helper\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|c:\\Users\\Artur\\source\\dbgrepos\\WH-Helper\\backend\\apps\\administrator\\views.py||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:backend\\apps\\administrator\\views.py||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Artur\\source\\dbgrepos\\WH-Helper\\frontend\\static\\templates\\master.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:frontend\\static\\templates\\master.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Artur\\source\\dbgrepos\\WH-Helper\\backend\\apps\\products\\views.py||{8B382828-6202-11D1-8870-0000F87579D2}",
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:backend\\apps\\products\\views.py||{8B382828-6202-11D1-8870-0000F87579D2}"
     },
@@ -41,10 +49,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Artur\\source\\dbgrepos\\WH-Helper\\frontend\\templates\\core\\start_page.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:frontend\\templates\\core\\start_page.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|c:\\Users\\Artur\\source\\dbgrepos\\WH-Helper\\backend\\apps\\administrator\\views.py||{8B382828-6202-11D1-8870-0000F87579D2}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:backend\\apps\\administrator\\views.py||{8B382828-6202-11D1-8870-0000F87579D2}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Artur\\source\\dbgrepos\\WH-Helper\\frontend\\templates\\admin_panel\\user_form.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
@@ -99,10 +103,6 @@
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:frontend\\templates\\products\\list.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Artur\\source\\dbgrepos\\WH-Helper\\frontend\\static\\templates\\master.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:frontend\\static\\templates\\master.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Artur\\source\\dbgrepos\\WH-Helper\\frontend\\templates\\store\\suppliers_list.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:frontend\\templates\\store\\suppliers_list.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
@@ -154,7 +154,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 285,
-          "SelectedChildIndex": 8,
+          "SelectedChildIndex": 13,
           "Children": [
             {
               "$type": "Bookmark",
@@ -186,7 +186,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 3,
               "Title": "forms.py",
               "DocumentMoniker": "c:\\Users\\Artur\\source\\dbgrepos\\WH-Helper\\backend\\apps\\products\\forms.py",
               "RelativeDocumentMoniker": "backend\\apps\\products\\forms.py",
@@ -199,20 +199,20 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 2,
               "Title": "views.py",
               "DocumentMoniker": "C:\\Users\\Artur\\source\\dbgrepos\\WH-Helper\\backend\\apps\\products\\views.py",
               "RelativeDocumentMoniker": "backend\\apps\\products\\views.py",
               "ToolTip": "C:\\Users\\Artur\\source\\dbgrepos\\WH-Helper\\backend\\apps\\products\\views.py",
               "RelativeToolTip": "backend\\apps\\products\\views.py",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABsAAAAEAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABoAAAAcAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.002457|",
               "WhenOpened": "2025-05-19T02:56:49.151Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 15,
+              "DocumentIndex": 16,
               "Title": "views.py",
               "DocumentMoniker": "C:\\Users\\Artur\\source\\dbgrepos\\WH-Helper\\backend\\apps\\custom_auth\\views.py",
               "RelativeDocumentMoniker": "backend\\apps\\custom_auth\\views.py",
@@ -225,7 +225,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 17,
+              "DocumentIndex": 18,
               "Title": "urls.py",
               "DocumentMoniker": "C:\\Users\\Artur\\source\\dbgrepos\\WH-Helper\\backend\\apps\\custom_auth\\urls.py",
               "RelativeDocumentMoniker": "backend\\apps\\custom_auth\\urls.py",
@@ -238,7 +238,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 14,
+              "DocumentIndex": 15,
               "Title": "models.py",
               "DocumentMoniker": "c:\\Users\\Artur\\source\\dbgrepos\\WH-Helper\\backend\\apps\\custom_auth\\models.py",
               "RelativeDocumentMoniker": "backend\\apps\\custom_auth\\models.py",
@@ -251,7 +251,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 4,
               "Title": "urls.py",
               "DocumentMoniker": "C:\\Users\\Artur\\source\\dbgrepos\\WH-Helper\\backend\\apps\\products\\urls.py",
               "RelativeDocumentMoniker": "backend\\apps\\products\\urls.py",
@@ -264,20 +264,20 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 0,
               "Title": "views.py",
               "DocumentMoniker": "c:\\Users\\Artur\\source\\dbgrepos\\WH-Helper\\backend\\apps\\administrator\\views.py",
               "RelativeDocumentMoniker": "backend\\apps\\administrator\\views.py",
               "ToolTip": "c:\\Users\\Artur\\source\\dbgrepos\\WH-Helper\\backend\\apps\\administrator\\views.py",
               "RelativeToolTip": "backend\\apps\\administrator\\views.py",
-              "ViewState": "AgIAAEIAAAAAAAAAAAAjwHkAAAAxAAAAAAAAAA==",
+              "ViewState": "AgIAAEIAAAAAAAAAAAAjwHgAAAA0AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.002457|",
               "WhenOpened": "2025-05-18T23:58:54.108Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 16,
+              "DocumentIndex": 17,
               "Title": "urls.py",
               "DocumentMoniker": "C:\\Users\\Artur\\source\\dbgrepos\\WH-Helper\\backend\\apps\\administrator\\urls.py",
               "RelativeDocumentMoniker": "backend\\apps\\administrator\\urls.py",
@@ -303,7 +303,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 13,
+              "DocumentIndex": 14,
               "Title": "receipt_list.html",
               "DocumentMoniker": "C:\\Users\\Artur\\source\\dbgrepos\\WH-Helper\\frontend\\templates\\store\\receipt_list.html",
               "RelativeDocumentMoniker": "frontend\\templates\\store\\receipt_list.html",
@@ -355,7 +355,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 5,
               "Title": "master.css",
               "DocumentMoniker": "C:\\Users\\Artur\\source\\dbgrepos\\WH-Helper\\frontend\\static\\css\\master.css",
               "RelativeDocumentMoniker": "frontend\\static\\css\\master.css",
@@ -368,7 +368,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 11,
               "Title": "start_page.html",
               "DocumentMoniker": "C:\\Users\\Artur\\source\\dbgrepos\\WH-Helper\\frontend\\templates\\core\\start_page.html",
               "RelativeDocumentMoniker": "frontend\\templates\\core\\start_page.html",
@@ -381,7 +381,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 23,
+              "DocumentIndex": 24,
               "Title": "list.html",
               "DocumentMoniker": "C:\\Users\\Artur\\source\\dbgrepos\\WH-Helper\\frontend\\templates\\products\\list.html",
               "RelativeDocumentMoniker": "frontend\\templates\\products\\list.html",
@@ -394,7 +394,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 12,
+              "DocumentIndex": 13,
               "Title": "add_receipt.html",
               "DocumentMoniker": "C:\\Users\\Artur\\source\\dbgrepos\\WH-Helper\\frontend\\templates\\store\\add_receipt.html",
               "RelativeDocumentMoniker": "frontend\\templates\\store\\add_receipt.html",
@@ -422,11 +422,11 @@
         },
         {
           "DockedWidth": 269,
-          "SelectedChildIndex": 5,
+          "SelectedChildIndex": 17,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 18,
+              "DocumentIndex": 19,
               "Title": "user_confirm_delete.html",
               "DocumentMoniker": "C:\\Users\\Artur\\source\\dbgrepos\\WH-Helper\\frontend\\templates\\admin_panel\\user_confirm_delete.html",
               "RelativeDocumentMoniker": "frontend\\templates\\admin_panel\\user_confirm_delete.html",
@@ -439,7 +439,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 19,
+              "DocumentIndex": 20,
               "Title": "supplier_form.html",
               "DocumentMoniker": "C:\\Users\\Artur\\source\\dbgrepos\\WH-Helper\\frontend\\templates\\store\\supplier_form.html",
               "RelativeDocumentMoniker": "frontend\\templates\\store\\supplier_form.html",
@@ -465,7 +465,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 9,
               "Title": "category_list.html",
               "DocumentMoniker": "C:\\Users\\Artur\\source\\dbgrepos\\WH-Helper\\frontend\\templates\\products\\category_list.html",
               "RelativeDocumentMoniker": "frontend\\templates\\products\\category_list.html",
@@ -478,7 +478,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 10,
               "Title": "category_form.html",
               "DocumentMoniker": "C:\\Users\\Artur\\source\\dbgrepos\\WH-Helper\\frontend\\templates\\products\\category_form.html",
               "RelativeDocumentMoniker": "frontend\\templates\\products\\category_form.html",
@@ -491,13 +491,13 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 6,
               "Title": "form.html",
               "DocumentMoniker": "C:\\Users\\Artur\\source\\dbgrepos\\WH-Helper\\frontend\\templates\\products\\form.html",
               "RelativeDocumentMoniker": "frontend\\templates\\products\\form.html",
               "ToolTip": "C:\\Users\\Artur\\source\\dbgrepos\\WH-Helper\\frontend\\templates\\products\\form.html",
               "RelativeToolTip": "frontend\\templates\\products\\form.html",
-              "ViewState": "AgIAACkAAAAAAAAAAAAUwD4AAAA2AAAAAAAAAA==",
+              "ViewState": "AgIAAD4AAAAAAAAAAAAAAD4AAAA2AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001512|",
               "WhenOpened": "2025-05-19T01:12:57.257Z",
               "EditorCaption": ""
@@ -517,7 +517,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 12,
               "Title": "user_form.html",
               "DocumentMoniker": "C:\\Users\\Artur\\source\\dbgrepos\\WH-Helper\\frontend\\templates\\admin_panel\\user_form.html",
               "RelativeDocumentMoniker": "frontend\\templates\\admin_panel\\user_form.html",
@@ -530,7 +530,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 22,
+              "DocumentIndex": 23,
               "Title": "import_users.html",
               "DocumentMoniker": "C:\\Users\\Artur\\source\\dbgrepos\\WH-Helper\\frontend\\templates\\admin_panel\\import_users.html",
               "RelativeDocumentMoniker": "frontend\\templates\\admin_panel\\import_users.html",
@@ -543,7 +543,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 8,
               "Title": "users.html",
               "DocumentMoniker": "C:\\Users\\Artur\\source\\dbgrepos\\WH-Helper\\frontend\\templates\\admin_panel\\users.html",
               "RelativeDocumentMoniker": "frontend\\templates\\admin_panel\\users.html",
@@ -556,7 +556,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 7,
               "Title": "index.html",
               "DocumentMoniker": "C:\\Users\\Artur\\source\\dbgrepos\\WH-Helper\\frontend\\templates\\admin_panel\\index.html",
               "RelativeDocumentMoniker": "frontend\\templates\\admin_panel\\index.html",
@@ -621,7 +621,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 20,
+              "DocumentIndex": 21,
               "Title": "login_base.html",
               "DocumentMoniker": "C:\\Users\\Artur\\source\\dbgrepos\\WH-Helper\\frontend\\static\\templates\\login_base.html",
               "RelativeDocumentMoniker": "frontend\\static\\templates\\login_base.html",
@@ -634,7 +634,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 21,
+              "DocumentIndex": 22,
               "Title": "master (backup).html",
               "DocumentMoniker": "C:\\Users\\Artur\\source\\dbgrepos\\WH-Helper\\frontend\\static\\templates\\master (backup).html",
               "RelativeDocumentMoniker": "frontend\\static\\templates\\master (backup).html",
@@ -647,13 +647,13 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 24,
+              "DocumentIndex": 1,
               "Title": "master.html",
               "DocumentMoniker": "C:\\Users\\Artur\\source\\dbgrepos\\WH-Helper\\frontend\\static\\templates\\master.html",
               "RelativeDocumentMoniker": "frontend\\static\\templates\\master.html",
               "ToolTip": "C:\\Users\\Artur\\source\\dbgrepos\\WH-Helper\\frontend\\static\\templates\\master.html",
               "RelativeToolTip": "frontend\\static\\templates\\master.html",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAADkAAACWAAAAAAAAAA==",
+              "ViewState": "AgIAAFMAAAAAAAAAAAAAAGQAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001512|",
               "WhenOpened": "2025-05-18T17:59:38.388Z",
               "EditorCaption": ""
