@@ -3,6 +3,7 @@
 
 
 {% block bar_content %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css ">
 <div style="padding-top: 0px" class="page-header">
     <h2>Форма добавления поставщика</h2>
     <p>Здесь вы можете добавить данные о поставщике</p>
@@ -81,9 +82,15 @@
                             <div class="error">{{ form.notes.errors }}</div>
                             {% endif %}
                         </div>
-                        <div class="frm-group-button">
-                            <button class="btn-xm btn-primary" type="submit">Сохранить</button>
-                            <a href="{% url 'store:suppliers-list' %}" class="btn-xm">Отменить</a>
+                        <div style="padding-top: 1rem" class="frm-group-button">
+                            <button class="btn-xm btn-primary" type="submit">
+                                <i style="margin-right: 0.5rem" class="fa-solid fa-floppy-disk">
+                                </i>Сохранить
+                            </button>
+                            <a href="{% url 'store:suppliers-list' %}" class="btn-xm">
+                                <i style="margin-right: 0.5rem" class="fa-solid fa-xmark">
+                                </i>Отменить
+                            </a>
                         </div>
                     </div>
                 </div>

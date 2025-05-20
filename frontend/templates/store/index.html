@@ -2,13 +2,28 @@
 
 
 {% block bar_content %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css ">
 <div class="search-bar">
-    <div class="search-input">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
-            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
-        </svg>
-        <input type="text" placeholder="Search...">
-    </div>
+
+    <form method="get" class=search-input>
+        <!-- Строка поиска -->
+        <input type="text" name="search" placeholder="Поиск..." value="{{ search }}">
+        <button class="action-btn" type="submit">
+            <i class="fas fa-search text-muted"></i>
+        </button>
+
+        <!-- Фильтры -->
+        <div class="filter-input">
+            <select name="availability">
+                <option value="all" {% if selected_availability == 'all' %}selected{% endif %}>Все операции</option>
+                <option value="available" {% if selected_availability == 'available' %}selected{% endif %}>Приходы</option>
+                <option value="out_of_stock" {% if selected_availability == 'out_of_stock' %}selected{% endif %}>Расходы</option>
+            </select>
+            <button type="submit" class="action-btn">
+                <i class="fas fa-filter me-1"></i>
+            </button>
+        </div>
+    </form>
 </div>
 <!-- Приветственное сообщение -->
 <div style="padding-top: 0px" class="page-header">
@@ -25,7 +40,7 @@
         <h2 class="card-title">Приходы</h2>
         <div class="card-content">
             <div class="button-group">
-                <a href="{% url 'store:add-receipt' %}" class="action-btn">Добавить приход</a>
+                <a href="{% url 'store:add-receipt' %}" class="action-btn"><i class="fa-solid fa-plus" style="margin-right: 0.5rem"></i>Добавить приход</a>
             </div>
             <div class="table-container">
                 <table class="table-card">
@@ -89,7 +104,9 @@
                             <td>{{ receipt.supplier }}</td>
                             <td>{{ receipt.get_status_display }}</td>
                             <td>
-                                <a href="{% url 'store:update_receipt_status' receipt.pk %}">Изменить статус</a>
+                                <a href="{% url 'store:update_receipt_status' receipt.pk %}" style="display: inline-block; padding: 5px 10px; color: #0d6efd" title="Редактировать">
+                                    <i class="fas fa-edit"></i>
+                                </a>
                             </td>
                         </tr>
                         {% empty %}
@@ -106,7 +123,7 @@
         <h2 class="card-title">Расходы</h2>
         <div class="card-content">
             <div class="button-group">
-                <a href="{% url 'store:add-dispatch' %}" class="action-btn">Добавить расход</a>
+                <a href="{% url 'store:add-dispatch' %}" class="action-btn"><i class="fa-solid fa-plus" style="margin-right: 0.5rem"></i>Добавить расход</a>
             </div>
             <div class="table-container">
                 <table class="table-card">
@@ -170,8 +187,9 @@
                             <td>{{ dispatch.recipient }}</td>
                             <td>{{ dispatch.get_status_display }}</td>
                             <td>
-                                <a href="{% url 'store:update-dispatch-status' dispatch.pk %}">Изменить статус</a>
-                            </td>
+                                <a href="{% url 'store:update-dispatch-status' dispatch.pk %}" style="display: inline-block; padding: 5px 10px; color: #0d6efd" title="Изменить статус">
+                                    <i class="fas fa-edit"></i>
+                                </a>
                         </tr>
                         {% empty %}
                         <tr><td colspan="9">Нет расходов</td></tr>

@@ -1,13 +1,26 @@
-﻿{% extends "base.html" %}
+﻿{% extends 'master.html' %}
 {% load static %}
 
-{% block content %}
-<h2>Подтвердите удаление пользователя</h2>
-<p>Вы действительно хотите удалить пользователя <strong>{{ user_to_delete.username }}</strong>?</p>
 
-<form method="post">
-    {% csrf_token %}
-    <button type="submit" class="btn btn-danger">Подтвердить удаление</button>
-    <a href="{% url 'admin:users' %}" class="btn btn-secondary">Отмена</a>
-</form>
+{% block bar_content %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<div style="padding-top: 0px" class="page-header">
+    <h2>Подтверждение удаления</h2>
+</div>
+{% endblock %}
+
+{% block content %}
+
+<div style="max-width:fit-content; max-height: fit-content" class="card">
+    <div class="card-header">
+        <div style="color: black" class="card-title">Вы действительно хотите удалить пользователя {{ user_to_delete.username }}?</div>
+    </div>
+    <form method="post">
+        {% csrf_token %}
+        <div style="padding-top: 0" class="frm-group-button">
+            <button class="btn-xm btn-primary" type="submit">Удалить</button>
+            <a href="{% url 'admin:users' %}" class="btn-xm">Отменить</a>
+        </div>
+    </form>
+</div>
 {% endblock %}

@@ -84,7 +84,7 @@ class UserUpdateView(UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['action'] = 'Изменение'
+        context['action'] = 'изменения'
         return context
 
 class UserDeleteView(RoleRequiredMixin, DeleteView):

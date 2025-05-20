@@ -1,12 +1,85 @@
-{% extends "base.html" %}
+{% extends "master.html" %}
 {% load static %}
 
+
+{% block bar_content %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css ">
+<div class="search-bar">
+    <div style="border: 0" class="filter-input">
+        <a href="{% url 'products:list' %}" class="action-btn">
+            <i style="margin-right: 0.5rem" class="fa-solid fa-arrow-left"></i>Назад
+        </a>
+    </div>
+
+    <form method="get" class=search-input>
+        <!-- Строка поиска -->
+        <input type="text" name="search" placeholder="Поиск..." value="{{ search }}">
+        <button class="action-btn" type="submit">
+            <i class="fas fa-search text-muted"></i>
+        </button>
+    </form>
+</div>
+<!-- Приветственное сообщение -->
+<div style="padding-top: 0px" class="page-header">
+    <h2>Панель управления категориями</h2>
+    <p>Здесь вы можете управлять данными категорий</p>
+</div>
+{% endblock %}
+
+
 {% block content %}
+<div class="container">
+
+    <!-- Товары -->
+    <div style="cursor:initial" class="tcard">
+        <h2 class="card-title">Список поставщиков</h2>
+        <div class="card-content">
+            <div class="button-group">
+                <a href="{% url 'products:category_create' %}" class="action-btn">
+                    <i class="fa-solid fa-plus" style="margin-right: 0.5rem"></i>Добавить категорию</a>
+            </div>
+            <div class="table-container">
+                <table class="table-card">
+                    <thead>
+                        <tr>
+                            <th>Название</th>
+                            <th class="text-end">Действия</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for category in categories %}
+                        <tr>
+                            <td>{{ category.name }}</td>
+                            <td>
+                                <a href="{% url 'products:category_edit' category.pk %}" style="display: inline-block; padding: 5px 10px; color: #0d6efd" class="btn btn-sm btn-edit">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <a href="{% url 'products:category_delete' category.pk %}" style="display: inline-block; padding: 5px 10px; color: #dc3545;" class="btn btn-sm btn-delete ms-2">
+                                    <i class="fas fa-trash-alt"></i>
+                                </a>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr><td colspan="2">Нет поставщиков</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+
+
+<!--================================================================-->
+
 <div class="container mt-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2>Управление категориями</h2>
         <a href="{% url 'products:category_create' %}" class="btn btn-add-category">
-            <i class="fas fa-plus-circle me-2"></i> Добавить категорию
+            <i class="fas fa-plus-circle me-2" style="margin-right: 0.5rem"></i> Добавить категорию
         </a>
     </div>
 
@@ -39,70 +112,3 @@
         </div>
     </div>
 </div>
-
-<style>
-    /* Стиль кнопки "Добавить категорию" */
-    .btn-add-category {
-        background-color: #4CAF50; /* Зеленый цвет */
-        color: white;
-        border: none;
-        border-radius: 8px;
-        padding: 10px 20px;
-        font-size: 16px;
-        font-weight: 500;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        transition: all 0.3s ease;
-        display: inline-flex;
-        align-items: center;
-    }
-    
-    .btn-add-category:hover {
-        background-color: #3e8e41;
-        transform: translateY(-2px);
-        box-shadow: 0 4px 8px rgba(0,0,0,0.15);
-        color: white;
-        text-decoration: none;
-    }
-    
-    .btn-add-category i {
-        font-size: 18px;
-    }
-    
-    /* Стили таблицы */
-    .table-categories {
-        width: 100%;
-        border-collapse: collapse;
-    }
-    
-    .table-categories th {
-        background-color: #f8f9fa;
-        padding: 12px 16px;
-        text-align: left;
-        border-bottom: 2px solid #dee2e6;
-        font-weight: 600;
-    }
-    
-    .table-categories td {
-        padding: 12px 16px;
-        border-bottom: 1px solid #e9ecef;
-        vertical-align: middle;
-    }
-    
-    .table-categories tr:hover {
-        background-color: #f8f9fa;
-    }
-    
-    /* Кнопки действий */
-    .btn-edit {
-        color: #2196F3;
-        border: 1px solid #2196F3;
-        border-radius: 6px;
-    }
-    
-    .btn-delete {
-        color: #f44336;
-        border: 1px solid #f44336;
-        border-radius: 6px;
-    }
-</style>
-{% endblock %}

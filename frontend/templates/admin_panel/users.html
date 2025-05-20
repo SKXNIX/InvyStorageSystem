@@ -1,11 +1,25 @@
 ﻿{% extends "master.html" %}
 
 {% block bar_content %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css ">
+<div class="search-bar">
+
+    <div style="border: 0" class="filter-input">
+        <a href="{% url 'admin:admin-panel' %}" class="action-btn">
+            <i style="margin-right: 0.5rem" class="fa-solid fa-arrow-left"></i>Назад
+        </a>
+    </div>
+
+    <form method="get" class=search-input>
+        <!-- Строка поиска -->
+        <input type="text" name="search" placeholder="Поиск..." value="{{ search }}">
+        <button class="action-btn" type="submit">
+            <i class="fas fa-search text-muted"></i>
+        </button>
+    </form>
+</div>
 <!-- Приветственное сообщение -->
 <div class="page-header">
-    <div>
-        <a href="{% url 'admin:admin-panel' %}" class="btn-return">⮜ Назад</a>
-    </div>
     <h2>Панель управления пользователями</h2>
     <p>Здесь вы можете управлять учетными записями пользователей</p>
 </div>
@@ -73,8 +87,16 @@
                             <td>{{ user.role }}</td>
                             <td>{{ user.created_at }}</td>
                             <td>
-                                <a href="{% url 'admin:user-update' user.id %}" class="btn btn-sm btn-warning">Изменить</a>
-                                <a href="{% url 'admin:user-delete' user.id %}" class="btn btn-sm btn-danger">Удалить</a>
+
+                                <a href="{% url 'admin:user-update' user.id %}" style="display: inline-block; padding: 5px 10px; color: #0d6efd" title="Редактировать">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <a href="{% url 'admin:user-delete' user.id %}" style="display: inline-block; padding: 5px 10px; color: #dc3545;" title="Удалить">
+                                    <i class="fas fa-trash-alt"></i>
+                                </a>
+
+
+
                             </td>
                         </tr>
                         {% endif %}
@@ -165,4 +187,5 @@
 
 <!-- Форма для массового удаления -->
 <form id="delete-selected-form" method="post" action="{% url 'admin:delete-selected-users' %}" class="d-none">
-    {% csrf_token %}</form>
+    {% csrf_token %}
+</form>
