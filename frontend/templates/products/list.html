@@ -60,9 +60,11 @@
         <div class="card-content">
             <div class="button-group">
                 <a href="{% url 'products:create' %}" class="action-btn">
-                    <i class="fa-solid fa-plus" style="margin-right: 0.5rem"></i>Добавить товар</a>
+                    <i class="fa-solid fa-plus" style="margin-right: 0.5rem"></i>Добавить товар
+                </a>
                 <a href="{% url 'products:category_list' %}" class="action-btn">
-                    <i class="fa-solid fa-list" style="margin-right: 0.5rem"></i>Категории</a>
+                    <i class="fa-solid fa-list" style="margin-right: 0.5rem"></i>Категории
+                </a>
                 <div class="card-text">
                     Всего: {{ products.paginator.count }} товаров
                 </div>
@@ -83,20 +85,20 @@
                     </thead>
                     <tbody>
                         {% for product in products %}
-                        <tr style="background-color: {% if product.stock_status == 'critical' %}#F3DBDD{% elif product.stock_status == 'out_of_stock' %}#f8d7da{% else %}#ffffff{% endif %};">
+                        <tr style="background-color: {% if product.stock_status == 'critical' %}#FFE5CD{% elif product.stock_status == 'out_of_stock' %}#FFCDCD{% else %}#ffffff{% endif %};">
                             <td>{{ product.name }}</td>
                             <td>{{ product.category }}</td>
                             <td>{{ product.get_unit_display }}</td>
                             <td>{{ product.location }}</td>
-                            <td>{{ product.quantity }}</td>
+                            <td>{{ product.total_quantity }}</td>
                             <td>{{ product.min_stock }}</td>
                             <td>
                                 {% if product.stock_status == 'critical' %}
-                                <span style="background-color: #ffc107; color: #212529">Критично</span>
+                                <span style="background-color: #FFE5CD; color: #212529">Критично</span>
                                 {% elif product.stock_status == 'out_of_stock' %}
-                                <span style=background-color: #dc3545; color: white">Нет</span>
+                                <span style="background-color: #FFCDCD; color: black">Нет</span>
                                 {% else %}
-                                <span style="background-color: #28a745; color: white">Есть</span>
+                                <span style="background-color: #ffffff; color: black">Есть</span>
                                 {% endif %}
                             </td>
                             <td>
@@ -118,11 +120,6 @@
             </div>
         </div>
     </div>
-
-
-
-    <!-- awdawwdwadwadawdawdwadw -->
-
 
 
     <!-- Пагинация -->

@@ -213,6 +213,28 @@ body {
     transition: all 0.3s ease
 }
 
+.card-pl {
+    max-height: 20rem;
+    overflow-y: auto; /* Вертикальная прокрутка при необходимости */
+    border: 1px inset #CCCCCC;
+    border-radius: 4px;
+    padding: 10px;
+    background-color: #ffffff;
+}
+
+    .card-pl ul {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .card-pl li {
+        margin: 5px 0;
+        white-space: nowrap; /* Предотвращает перенос слов */
+        overflow: hidden;
+        text-overflow: ellipsis; /* Обрезает текст с многоточием, если он переполняет контейнер */
+    }
+
 /* Скрытый контент */
 .collapsed .card-content {
     display: none;
@@ -432,11 +454,11 @@ form {
 /* Адаптивность */
 @media (max-width: 768px) {
     .card {
-        width: 100%;
+        width: 95vw;
     }
 
     .tcard {
-        width: 100%;
+        width: 95vw;
     }
 
 

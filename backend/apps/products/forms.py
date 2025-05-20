@@ -36,12 +36,11 @@ class ProductForm(forms.ModelForm):
         fields = ['name', 'category', 'unit', 'description', 'location', 'min_stock']
         widgets = {
             'description': forms.Textarea(attrs={'rows': 3}),
-            'min_stock': forms.NumberInput(attrs={'min': 0}),
+            'min_stock': forms.NumberInput(attrs={'min': 0, 'step': '0.01'}),
         }
         labels = {
             'name': 'Наименование',
             'category': 'Категория',
-            'quantity': 'Количество', 
             'unit': 'Единица измерения',
             'description': 'Описание',
             'location': 'Место хранения',

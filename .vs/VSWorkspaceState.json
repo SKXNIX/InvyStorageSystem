@@ -4,13 +4,13 @@
     "\\backend",
     "\\backend\\apps",
     "\\backend\\apps\\administrator",
-    "\\backend\\apps\\core",
-    "\\backend\\apps\\custom_auth",
+    "\\backend\\apps\\products",
     "\\frontend",
+    "\\frontend\\static",
+    "\\frontend\\static\\css",
     "\\frontend\\templates",
-    "\\frontend\\templates\\admin_panel",
-    "\\frontend\\templates\\products"
+    "\\frontend\\templates\\store"
   ],
-  "SelectedNode": "\\backend\\apps\\core\\urls.py",
+  "SelectedNode": "\\frontend\\templates\\admin_panel\\user_confirm_delete.html",
   "PreviewInSolutionExplorer": false
 }

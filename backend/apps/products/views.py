@@ -1,10 +1,12 @@
-from django.db.models import Q, F
+from django.db.models import Q, F, DecimalField, Field, Sum
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import ListView
 from apps.products.models import Category, Product
 from apps.products.forms import ProductForm, CategoryForm, ProductFilterForm
 from django.core.paginator import Paginator
 from django.db.models import Q
+from django.db.models.functions import Coalesce
+from decimal import Decimal
 
 def product_list(request):
     # Получаем параметры фильтрации
@@ -14,7 +16,10 @@ def product_list(request):
     critical = request.GET.get('critical', False)
     
     # Фильтрация товаров
-    products = Product.objects.all().select_related('category')
+    products = Product.objects.all() \
+        .select_related('category') \
+        .annotate(
+            total_quantity=Coalesce(Sum('store__quantity'), Decimal('0.00'), output_field=DecimalField()))
     
     if search:
         products = products.filter(
@@ -27,12 +32,12 @@ def product_list(request):
         products = products.filter(category_id=category_id)
     
     if availability == 'available':
-        products = products.filter(quantity__gt=0)
+         products = products.filter(total_quantity__gt=Decimal('0'))
     elif availability == 'out_of_stock':
-        products = products.filter(quantity=0)
+        products = products.filter(total_quantity__lte=Decimal('0'))
     
     if critical:
-        products = products.filter(quantity__lte=F('min_stock'))
+        products = products.filter(total_quantity__lte=F('min_stock'))
     
     # Пагинация
     paginator = Paginator(products, 25)
@@ -41,7 +46,7 @@ def product_list(request):
     
     # Получаем все категории для фильтра
     categories = Category.objects.all()
-    
+
     context = {
         'products': page_obj,
         'categories': categories,

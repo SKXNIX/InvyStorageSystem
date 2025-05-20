@@ -19,8 +19,17 @@
     </div>
     <div class="card-body">
         <div class="metrics">
-            <div class="card-number">100500</div>
+            <div class="card-number">{{ total_products }}</div>
             <div>на складе</div>
+            <div class="card-pl">
+                <ul>
+                    {% for product_name in all_product_names %}
+                    <li>{{ product_name }}</li>
+                    {% empty %}
+                    <li>Нет товаров</li>
+                    {% endfor %}
+                </ul>
+            </div>
         </div>
     </div>
 </div>
@@ -31,8 +40,17 @@
     </div>
     <div class="card-body">
         <div class="metrics">
-            <div class="card-number">100</div>
+            <div class="card-number">{{ low_stock_products }}</div>
             <div>на складе</div>
+            <div class="card-pl">
+                <ul>
+                    {% for product_name in low_stock_product_names %}
+                    <li>{{ product_name }}</li>
+                    {% empty %}
+                    <li>Нет товаров с низкими остатками</li>
+                    {% endfor %}
+                </ul>
+            </div>
         </div>
     </div>
 </div>
@@ -43,8 +61,17 @@
     </div>
     <div class="card-body">
         <div class="metrics">
-            <div class="card-number">10</div>
+            <div class="card-number">{{ out_of_stock_products }}</div>
             <div>товаров требуют срочного заказа</div>
+            <div class="card-pl">
+                <ul>
+                    {% for product_name in out_of_stock_product_names %}
+                    <li>{{ product_name }}</li>
+                    {% empty %}
+                    <li>Нет товаров с критическими остатками</li>
+                    {% endfor %}
+                </ul>
+            </div>
         </div>
     </div>
 </div>

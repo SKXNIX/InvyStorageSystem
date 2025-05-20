@@ -88,7 +88,7 @@ class DeleteSelectedReceiptsView(RoleRequiredMixin, FormView):
             messages.success(request, "Выбранные поступления удалены")
         else:
             messages.warning(request, "Нет выбранных поступлений")
-        return HttpResponseRedirect(reverse_lazy('store:receipts-list'))
+        return HttpResponseRedirect(reverse_lazy('store:store-settings'))
 
 
 @login_required
@@ -122,7 +122,7 @@ def add_stock_receipt(request):
                 receipt = form.save(commit=False)
                 receipt.save() 
                 messages.success(request, "Приход успешно добавлен!")
-                return redirect('store:receipts-list')  
+                return redirect('store:store-settings')  
             except Exception as e:
                 messages.error(request, f"Ошибка: {str(e)}")
         else:
@@ -136,7 +136,7 @@ def add_stock_receipt(request):
 class ReceiptListView(RoleRequiredMixin, ListView):
     """Представление: список поступлений"""
     model = StockReceipt
-    template_name = 'store/receipt_list.html'
+    template_name = 'store/index.html'
     allowed_roles = ['superadmin', 'admin','storekeeper']
     context_object_name = 'receipts'
 
@@ -243,7 +243,7 @@ def add_dispatch(request):
                 dispatch = form.save(commit=False)
                 dispatch.save(user=request.user)  # Сохраняем с пользователем
                 messages.success(request, "Расход успешно добавлен!")
-                return redirect('store:dispatch-list')  # Перенаправляем на список
+                return redirect('store:store-settings')  # Перенаправляем на список
             except ValueError as e:
                 form.add_error(None, str(e))
                 messages.error(request, str(e))
@@ -257,7 +257,7 @@ def add_dispatch(request):
 class DispatchListView(RoleRequiredMixin, ListView):
     """Представление: список отгрузок"""
     model = Dispatch
-    template_name = 'store/dispatch_list.html'
+    template_name = 'store/index.html'
     allowed_roles = ['superadmin', 'admin','storekeeper']
     context_object_name = 'dispatches'
 
@@ -281,7 +281,7 @@ class DispatchListView(RoleRequiredMixin, ListView):
 @role_required(['superadmin', 'admin', 'storekeeper'])
 def dispatch_list(request):
     dispatches = Dispatch.objects.all().order_by('-dispatch_date')
-    return render(request, 'store/dispatch_list.html', {'dispatches': dispatches})
+    return render(request, 'store/index.html', {'dispatches': dispatches})
 
 
 @login_required
@@ -301,7 +301,7 @@ def update_dispatch_status(request, pk):
                         return render(request, 'store/update_dispatch_status.html', 
                                       {'form': form, 'dispatch': dispatch})
                 form.save()
-                return redirect('store:dispatch-list')
+                return redirect('store:store-settings')
             except ValueError as e:
                 messages.error(request, str(e))
         else:
@@ -314,7 +314,7 @@ def update_dispatch_status(request, pk):
 @role_required(['superadmin', 'admin', 'storekeeper'])
 def store_list(request):
     stores = Store.objects.all().order_by('product__name')
-    return render(request, 'store/store_list.html', {'stores': stores})
+    return render(request, 'store/index.html', {'stores': stores})
 
 
 class DeleteSelectedDispatchesView(RoleRequiredMixin, FormView):
@@ -328,7 +328,7 @@ class DeleteSelectedDispatchesView(RoleRequiredMixin, FormView):
             messages.success(request, "Выбранные отгрузки удалены")
         else:
             messages.warning(request, "Нет выбранных отгрузок")
-        return HttpResponseRedirect(reverse_lazy('store:dispatch-list'))
+        return HttpResponseRedirect(reverse_lazy('store:store-settings'))
 
 
 class DeleteSelectedSuppliersView(RoleRequiredMixin, FormView):
@@ -346,7 +346,7 @@ class DeleteSelectedSuppliersView(RoleRequiredMixin, FormView):
                 return HttpResponseRedirect(reverse_lazy('store:suppliers-list'))
         else:
             messages.warning(request, "Нет выбранных поставщиков")
-        return HttpResponseRedirect(reverse_lazy('store:suppliers-list'))\
+        return HttpResponseRedirect(reverse_lazy('store:suppliers-list'))
 
 
 class SupplierDetailView(RoleRequiredMixin, DetailView):
