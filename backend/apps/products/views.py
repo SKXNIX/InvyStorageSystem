@@ -89,8 +89,16 @@ def product_delete(request, pk):
 # Аналогичные представления для Category (category_list, category_create и т.д.)
 
 def category_list(request):
-    categories = Category.objects.all()
-    return render(request, 'products/category_list.html', {'categories': categories})
+    search = request.GET.get('search', '')
+    categories = Category.objects.filter(
+        name__icontains=search
+    )
+    
+    context = {
+        'categories': categories,
+        'search': search,
+    }
+    return render(request, 'products/category_list.html', context)
 
 def category_create(request):
     if request.method == 'POST':

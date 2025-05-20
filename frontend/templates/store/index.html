@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css ">
 <div class="search-bar">
 
-    <form method="get" class=search-input>
+    <form method="GET" class=search-input>
         <!-- Строка поиска -->
         <input type="text" name="search" placeholder="Поиск..." value="{{ search }}">
         <button class="action-btn" type="submit">
@@ -36,6 +36,7 @@
 {% block content %}
 <div class="container">
     <!-- Приходы -->
+    {% if selected_availability == 'all' or selected_availability == 'available' %}
     <div class="tcard">
         <h2 class="card-title">Приходы</h2>
         <div class="card-content">
@@ -117,8 +118,10 @@
             </div>
         </div>
     </div>
+    {% endif %}
 
     <!-- Расходы -->
+    {% if selected_availability == 'all' or selected_availability == 'out_of_stock' %}
     <div class="tcard">
         <h2 class="card-title">Расходы</h2>
         <div class="card-content">
@@ -199,7 +202,7 @@
             </div>
         </div>
     </div>
-
+    {% endif %}
 </div>
 
 <script>
@@ -216,6 +219,19 @@
                 card.classList.toggle('collapsed');
             }
         });
+    });
+</script>
+
+<script>
+    // Обновите скрипт для checkbox'ов с учетом новых id
+    document.getElementById('select-all-receipts').addEventListener('change', function () {
+        const checkboxes = document.querySelectorAll('input[name="selected_receipts"]');
+        checkboxes.forEach(cb => cb.checked = this.checked);
+    });
+
+    document.getElementById('select-all-dispatches').addEventListener('change', function () {
+        const checkboxes = document.querySelectorAll('input[name="selected_dispatches"]');
+        checkboxes.forEach(cb => cb.checked = this.checked);
     });
 </script>
 {% endblock %}

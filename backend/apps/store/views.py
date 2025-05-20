@@ -93,13 +93,40 @@ class DeleteSelectedReceiptsView(RoleRequiredMixin, FormView):
 
 
 @login_required
-@role_required(['superadmin','admin','storekeeper'])
+@role_required(['superadmin', 'admin', 'storekeeper'])
 def store_page(request):
-    receipts_list = StockReceipt.objects.all().order_by('-receipt_date')
-    dispatches_list = Dispatch.objects.all().order_by('-dispatch_date')
+    search = request.GET.get('search', '')
+    availability = request.GET.get('availability', 'all')
     
-    paginator_r = Paginator(receipts_list, 20)
-    paginator_d = Paginator(dispatches_list, 20)
+    # Фильтрация поступлений (StockReceipt)
+    receipts_list = StockReceipt.objects.all()
+    if search:
+        receipts_list = receipts_list.filter(
+            Q(product__name__icontains=search) |
+            Q(invoice_number__icontains=search) |
+            Q(supplier__name__icontains=search) |
+            Q(comment__icontains=search)
+        )
+    
+    # Фильтрация отгрузок (Dispatch)
+    dispatches_list = Dispatch.objects.all()
+    if search:
+        dispatches_list = dispatches_list.filter(
+            Q(product__name__icontains=search) |
+            Q(invoice_number__icontains=search) |
+            Q(recipient__icontains=search) |
+            Q(comment__icontains=search)
+        )
+    
+    # Фильтр по типу операции (availability)
+    if availability == 'available':  # Показать только приходы
+        dispatches_list = Dispatch.objects.none()
+    elif availability == 'out_of_stock':  # Показать только отгрузки
+        receipts_list = StockReceipt.objects.none()
+    
+    # Пагинация
+    paginator_r = Paginator(receipts_list.order_by('-receipt_date'), 20)
+    paginator_d = Paginator(dispatches_list.order_by('-dispatch_date'), 20)
     
     page_r = request.GET.get('page_r')
     page_d = request.GET.get('page_d')
@@ -110,8 +137,11 @@ def store_page(request):
     context = {
         'receipts': receipts,
         'dispatches': dispatches,
+        'search': search,
+        'selected_availability': availability,
     }
     return render(request, 'store/index.html', context)
+
 
 @login_required
 @role_required(['superadmin', 'admin','storekeeper'])
