@@ -1,174 +1,104 @@
-﻿{% extends "base.html" %}
+﻿{% extends "master.html" %}
 {% load static %}
 
+
+{% block bar_content %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css ">
+<div style="padding-top: 0px" class="page-header">
+    <h2>Форма регистрации прихода</h2>
+    <p>Здесь вы можете регистрировать приход товаров</p>
+</div>
+{% endblock %}
+
+
 {% block content %}
-<style>
-    .container {
-        width: 60%;
-        max-width: 1200px;
-        background-color: #fff;
-        padding: 0px 20px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        border-radius: 8px;
-    }
+<div style="max-width: max-content; max-height: min-content" class="card">
+    <div class="card-header">
+        <div class="card-title">Добавление прихода</div>
+    </div>
+    <div class="card-body">
+        <div class="frm">
+            <form method="post">
+                {% csrf_token %}
+                <div class="frm-grid">
+                    <div class="frm-group">
+                        <div>
+                            <label for="{{ form.product.id_for_label }}">Продукция:</label>
+                            {{ form.product }}
+                            {% if form.product.errors %}
+                            <div class="error">{{ form.product.errors }}</div>
+                            {% endif %}
+                        </div>
 
-    .form-group {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 20px;
-        margin-bottom: 15px;
-    }
+                        <div>
+                            <label for="{{ form.quantity.id_for_label }}">Количество:</label>
+                            {{ form.quantity }}
+                            {% if form.quantity.errors %}
+                            <div class="error">{{ form.quantity.errors }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
 
-        .form-group label {
-            display: block;
-            margin-bottom: 0px;
-        }
 
-        .form-group input, .form-group select {
-            width: 100%;
-            padding: 8px;
-            box-sizing: border-box;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
+                    <div class="frm-group">
+                        <div>
+                            <label for="{{ form.receipt_date.id_for_label }}">Дата поступления:</label>
+                            {{ form.receipt_date }}
+                            {% if form.receipt_date.errors %}
+                            <div class="error">{{ form.receipt_date.errors }}</div>
+                            {% endif %}
+                        </div>
 
-        .form-group textarea {
-            font-family: Arial, sans-serif;
-            font-size: 14px;
-            width: 100%;
-            padding: 8px;
-            box-sizing: border-box;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            height: 34px;
-        }
+                        <div>
+                            <label for="{{ form.invoice_number.id_for_label }}">Номер накладной:</label>
+                            {{ form.invoice_number }}
+                            {% if form.invoice_number.errors %}
+                            <div class="error">{{ form.invoice_number.errors }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
 
-            .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
-                border-color: #007bff;
-                outline: none;
-            }
 
-        .form-group .error {
-            color: red;
-            font-size: 0.9em;
-        }
+                    <div class="frm-group">
+                        <div>
+                            <label for="{{ form.supplier.id_for_label }}">Поставщик:</label>
+                            {{ form.supplier }}
+                            {% if form.supplier.errors %}
+                            <div class="error">{{ form.supplier.errors }}</div>
+                            {% endif %}
+                        </div>
 
-        .form-group button {
-            padding: 10px 15px;
-            background-color: #1E3A8A;
-            color: #fff;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 16px;
-            transition: background-color 0.3s;
-        }
+                        <div>
+                            <label for="{{ form.status.id_for_label }}">Статус:</label>
+                            {{ form.status }}
+                            {% if form.status.errors %}
+                            <div class="error">{{ form.status.errors }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
 
-            .form-group button:hover {
-                background-color: #3B82F6; /* Светлый синий при наведении */
-            }
 
-    @media (max-width: 768px) {
-        .form-group {
-            grid-template-columns: 1fr; /* Одна колонка на маленьких экранах */
-        }
-    }
-
-    .btn-xm {
-        padding: 10px 15px;
-        border-radius: 4px;
-        text-decoration: none;
-        text-align: center;
-        font-size: 16px;
-        cursor: pointer;
-        background-color: #1E3A8A;
-        color: white;
-        border: none;
-        transition: background-color 0.3s;
-    }
-
-        .btn-xm:hover {
-            background-color: #3B82F6; /* Светлый синий при наведении */
-        }
-</style>
-
-<h1>Добавление поступления</h1>
-<form method="post">
-    {% csrf_token %}
-    <div class="form-group">
-        <div>
-            <label for="{{ form.product.id_for_label }}">Продукция:</label>
-            {{ form.product }}
-            {% if form.product.errors %}
-            <div class="error">{{ form.product.errors }}</div>
-            {% endif %}
+                    <div class="frm-group">
+                        <div>
+                            <label for="{{ form.comment.id_for_label }}">Примечание:</label>
+                            {{ form.comment }}
+                            {% if form.comment.errors %}
+                            <div class="error">{{ form.comment.errors }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="frm-group-button">
+                            <button class="btn-xm btn-primary" type="submit"><i style="margin-right: 0.5rem" class="fa-solid fa-floppy-disk">
+                                   </i>Сохранить</button>
+                            <a href="{% url 'store:store-settings' %}" class="btn-xm"><i style="margin-right: 0.5rem" class="fa-solid fa-xmark">
+                                     </i>Отменить</a>
+                        </div>
+                    </div>
+                </div>
+            </form>
         </div>
-
-        <div>
-            <label for="{{ form.quantity.id_for_label }}">Количество:</label>
-            {{ form.quantity }}
-            {% if form.quantity.errors %}
-            <div class="error">{{ form.quantity.errors }}</div>
-            {% endif %}
+        <div class="chart">
+            <!-- График -->
         </div>
     </div>
-
-
-    <div class="form-group">
-        <div>
-            <label for="{{ form.receipt_date.id_for_label }}">Дата поступления:</label>
-            {{ form.receipt_date }}
-            {% if form.receipt_date.errors %}
-        <div class="error">{{ form.receipt_date.errors }}</div>
-            {% endif %}
-        </div>
-
-        <div>
-            <label for="{{ form.invoice_number.id_for_label }}">Номер накладной:</label>
-            {{ form.invoice_number }}
-            {% if form.invoice_number.errors %}
-            <div class="error">{{ form.invoice_number.errors }}</div>
-            {% endif %}
-        </div>
-    </div>
-
-
-    <div class="form-group">
-        <div>
-            <label for="{{ form.supplier.id_for_label }}">Поставщик:</label>
-            {{ form.supplier }}
-            {% if form.supplier.errors %}
-        <div class="error">{{ form.supplier.errors }}</div>
-            {% endif %}
-        </div>
-
-        <div>
-            <label for="{{ form.status.id_for_label }}">Статус:</label>
-            {{ form.status }}
-            {% if form.status.errors %}
-            <div class="error">{{ form.status.errors }}</div>
-            {% endif %}
-        </div>
-    </div>
-
-
-    <div class="form-group">
-        <div>
-            <label for="{{ form.comment.id_for_label }}">Примечание:</label>
-            {{ form.comment }}
-            {% if form.comment.errors %}
-            <div class="error">{{ form.comment.errors }}</div>
-            {% endif %}
-        </div>
-    </div>
-
-    <div class="form-group">
-        <button type="submit">Сохранить</button>
-        <a href="{% url 'store:receipts-list' %}" class="btn-xm">Отменить</a>
-    </div>
-</form>
-<!--Подключаем стили-->
-<link rel="stylesheet" href="{% static 'css/forms.css' %}">
-
-
+</div>
 {% endblock %}

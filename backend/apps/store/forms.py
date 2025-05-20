@@ -9,10 +9,6 @@ class StockReceiptForm(forms.ModelForm):
 
     def save(self, commit=True):
         instance = super().save(commit=False)
-        
-        if self.user and hasattr(instance, 'created_by'):
-            instance.created_by = self.user
-            
         if commit:
             instance.save()
         return instance
@@ -37,7 +33,7 @@ class StockDispatchForm(forms.ModelForm):
     def save(self, commit=True):
         instance = super().save(commit=False)
         if commit:
-            instance.save()
+            instance.save(user=self.user)
         return instance
 
     class Meta:
@@ -62,7 +58,8 @@ class SupplierForm(forms.ModelForm):
         if commit:
             instance.save()
         return instance
-    
+
     class Meta:
         model = Supplier
-        fields = ['name', 'contact_person', 'email', 'phone', 'address', 'website', 'notes'] 
+        fields = ['name', 'contact_person', 'email', 'phone', 'address', 'website', 'notes']
+        

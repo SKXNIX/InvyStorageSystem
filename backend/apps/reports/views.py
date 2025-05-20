@@ -9,7 +9,10 @@ from .report_utils.csv_generator import (
     generate_product_operations
 )
 from .report_utils.pdf_generator import (
-    generate_current_stock_pdf
+    generate_current_stock_pdf,
+    generate_product_operations_pdf,
+    generate_low_stock_pdf,
+    generate_operations_pdf
 )
 
 class ReportView(LoginRequiredMixin, FormView):
@@ -23,13 +26,15 @@ class ReportView(LoginRequiredMixin, FormView):
         
         if report_type == 'current_stock':
             if format == 'csv':
-                return generate_current_stock()
+                return generate_current_stock() 
             else:
                 return generate_current_stock_pdf()
         
         elif report_type == 'low_stock':
             if format == 'csv':
                 return generate_low_stock()
+            else:
+                return generate_low_stock_pdf()
             
         
         elif report_type == 'operations':
@@ -37,8 +42,9 @@ class ReportView(LoginRequiredMixin, FormView):
             end_date = form.cleaned_data['end_date']
             if format == 'csv':
                 return generate_operations(start_date, end_date)
+            else:
+                return generate_operations_pdf(start_date, end_date)
             
-        
         elif report_type == 'product_operations':
             product = form.cleaned_data['product']
             start_date = form.cleaned_data['start_date']

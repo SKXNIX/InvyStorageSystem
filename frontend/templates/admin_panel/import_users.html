@@ -1,26 +1,40 @@
-﻿{% extends "base.html" %}
+﻿{% extends "master.html" %}
 {% load static %}
 
+{% block bar_content %}
+<!-- Приветственное сообщение -->
+<div class="page-header">
+    <div>
+        <a href="{% url 'admin:users' %}" class="btn-return">⮜ Назад</a>
+    </div>
+    <h2>Панель импорта пользователей</h2>
+    <p>Здесь вы можете импортировать данные учетных записей</p>
+</div>
+{% endblock %}
+
+
 {% block content %}
-<h2>Импорт пользователей из Excel</h2>
-<p>
-    <strong>Формат файла:</strong>
-    Столбцы должны быть:
-    <ul>
-        <li><code>Full name</code> — обязательное поле</li>
-        <li><code>Role</code> — обязательное поле (возможные значения: <code>admin</code>, <code>storekeeper</code>)</li>
-    </ul>
-    <a href="{% static 'example_files/user_template.xlsx' %}" class="btn btn-primary" download>
-        Скачать пример шаблона
-    </a>
-</p>
+<div style="max-width:fit-content; max-height: fit-content" class="card">
+    <div class="card-header">
+        <div style="color: black" class="card-title">Справка по импорту</div>
+    </div>
+    <div class="card-body">
+        <p>Формат файла: <code>.xlsx</code></p>
+        <p>Столбцы должны быть:</p>
+        <ul>
+            <li><code>Full name</code> — обязательное поле</li>
+            <li style="padding:0.5rem 0"><code>Role</code> — обязательное поле (возможные значения: <card-code>admin</card-code>, <code>storekeeper</code>)</li>
+        </ul>
+        <a href="{% static 'example_files/user_template.xlsx' %}" class="btn btn-primary" download>
+            Скачать пример шаблона
+        </a>
 
-<form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit" class="btn btn-primary">Загрузить файл</button>
-</form>
+        <form style="padding: 0.5rem 0" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-primary">Загрузить файл</button>
+        </form>
 
-<!-- Подключаем стили -->
-<link rel="stylesheet" href="{% static 'css/admin.css' %}">
+    </div>
+</div>
 {% endblock %}

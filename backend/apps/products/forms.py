@@ -33,10 +33,10 @@ class ProductFilterForm(forms.Form):
 class ProductForm(forms.ModelForm):
     class Meta:
         model = Product
-        fields = '__all__'
+        fields = ['name', 'category', 'unit', 'description', 'location', 'min_stock']
         widgets = {
             'description': forms.Textarea(attrs={'rows': 3}),
-            'min_stock': forms.NumberInput(attrs={'min': 0}),
+            'min_stock': forms.NumberInput(attrs={'min': 0, 'step': '0.01'}),
         }
         labels = {
             'name': 'Наименование',

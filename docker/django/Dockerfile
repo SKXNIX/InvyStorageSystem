@@ -22,8 +22,6 @@ RUN if [ "$ENV" = "debug" ]; then pip install django-debug-toolbar; fi
 # Copy all the project files
 COPY . ./
 
-COPY ./backend/apps/reports/fonts /usr/share/fonts/truetype/dejavu/
-
 # Specify the correct PYTHONPATH and settings
 ENV PYTHONPATH=/app/backend
 ENV DJANGO_SETTINGS_MODULE=backend.config.settings.base

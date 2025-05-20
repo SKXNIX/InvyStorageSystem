@@ -1,4 +1,6 @@
+from decimal import Decimal
 import io
+from django.db.models.functions import Coalesce
 from reportlab.lib.pagesizes import letter, landscape
 from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph
 from reportlab.lib import colors
@@ -8,11 +10,11 @@ from reportlab.pdfbase.ttfonts import TTFont
 from django.http import HttpResponse
 from apps.store.models import StockReceipt, Dispatch
 from apps.products.models import Product
-from django.db.models import F
+from django.db.models import F, DecimalField, Sum
 
 # Регистрируем шрифт с поддержкой кириллицы
-pdfmetrics.registerFont(TTFont('DejaVuSans', '/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf'))
-pdfmetrics.registerFont(TTFont('DejaVuSans-Bold', '/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf'))
+pdfmetrics.registerFont(TTFont('DejaVuSans', 'backend/apps/reports/fonts/DejaVuSans.ttf'))
+pdfmetrics.registerFont(TTFont('DejaVuSans-Bold', 'backend/apps/reports/fonts/DejaVuSans-Bold.ttf'))
 
 def generate_pdf_response(filename, title, headers, data):
     """Генерирует PDF документ с таблицей"""
@@ -48,13 +50,13 @@ def generate_pdf_response(filename, title, headers, data):
     
     # Стили таблицы
     table.setStyle(TableStyle([
-        ('BACKGROUND', (0, 0), (-1, 0), colors.grey),
-        ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+        ('BACKGROUND', (0, 0), (-1, 0), colors.lightgrey),
+        ('TEXTCOLOR', (0, 0), (-1, 0), colors.black),
         ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
         ('FONTNAME', (0, 0), (-1, 0), 'DejaVuSans-Bold'),
         ('FONTSIZE', (0, 0), (-1, 0), 12),
         ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
-        ('BACKGROUND', (0, 1), (-1, -1), colors.beige),
+        ('BACKGROUND', (0, 1), (-1, -1), colors.white),
         ('GRID', (0, 0), (-1, -1), 1, colors.black),
         ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
         ('FONTNAME', (0, 1), (-1, -1), 'DejaVuSans'),
@@ -79,7 +81,7 @@ def generate_pdf_response(filename, title, headers, data):
 def generate_current_stock_pdf():
     """Генерация PDF отчета текущих остатков"""
     queryset = Product.objects.select_related('category').annotate(
-        current_quantity=F('quantity')
+        total_quantity=Coalesce(Sum('store__quantity'), Decimal('0.00'), output_field=DecimalField())
     ).order_by('name')
     
     # Подготавливаем данные
@@ -93,38 +95,7 @@ def generate_current_stock_pdf():
         data.append([
             product.name,
             product.category.name,
-            str(product.quantity),
-            product.unit,
-            product.location,
-            str(product.min_stock)
-        ])
-    
-    return generate_pdf_response(
-        filename="current_stock",
-        title="Отчет по текущим остаткам",
-        headers=headers,
-        data=data
-    )
-
-
-def generate_current_stock_pdf():
-    """Генерация PDF отчета текущих остатков"""
-    queryset = Product.objects.select_related('category').annotate(
-        current_quantity=F('quantity')
-    ).order_by('name')
-    
-    # Подготавливаем данные
-    headers = [
-        'Товар', 'Категория', 'Количество', 
-        'Единица измерения', 'Место хранения', 'Мин. остаток'
-    ]
-    
-    data = []
-    for product in queryset:
-        data.append([
-            product.name,
-            product.category.name,
-            str(product.quantity),
+            str(product.total_quantity),
             product.unit,
             product.location,
             str(product.min_stock)
@@ -139,7 +110,9 @@ def generate_current_stock_pdf():
 
 def generate_low_stock_pdf():
     """Генерация PDF отчета товаров с низким остатком"""
-    queryset = Product.objects.filter(quantity__lte=F('min_stock'))
+    queryset = Product.objects.annotate(
+        total_quantity=Coalesce(Sum('store__quantity'), Decimal('0.00'), output_field=DecimalField())
+    ).filter(total_quantity__lte=F('min_stock'), total_quantity__gt=0)  # Условие
     
     headers = [
         'Товар', 'Категория', 'Текущий остаток',
@@ -151,9 +124,9 @@ def generate_low_stock_pdf():
         data.append([
             product.name,
             product.category.name,
-            str(product.quantity),
+            str(product.total_quantity),
             str(product.min_stock),
-            str(product.quantity - product.min_stock),
+            str(product.total_quantity - product.min_stock),
             product.unit
         ])
     

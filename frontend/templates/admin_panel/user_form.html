@@ -1,22 +1,129 @@
-﻿<!-- frontend/templates/admin_panel/user_form.html -->
-{% extends "base.html" %}
-{% block content %}
+﻿{% extends "master.html" %}
 {% load static %}
-<h2>{{ action }} пользователя</h2>
+
+
+{% block bar_content %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<div style="padding-top: 0px" class="page-header">
+    <h2>Форма {{ action }} пользователя</h2>
+    <p>Здесь вы можете управлять учетной записью пользователя</p>
+</div>
+{% endblock %}
+
+
+{% block content %}
+<div style="max-width: max-content; max-height: min-content" class="card">
+    <div class="card-header">
+        <div class="card-title">Данные пользователя</div>
+    </div>
+    <div class="card-body">
+        <div class="frm">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="frm-grid">
+                    <div class="frm-group">
+                        <div>
+                            <label for="{{ form.username.id_for_label }}">Логин:</label>
+                            {{ form.username }}
+                            {% if form.username.errors %}
+                            <div class="error">{{ form.username.errors }}</div>
+                            {% endif %}
+                        </div>
+
+                        <div>
+                            <label for="{{ form.password.id_for_label }}">Пароль:</label>
+                            {{ form.password }}
+                            {% if form.password.errors %}
+                            <div class="error">{{ form.password.errors }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+
+                    <div class="frm-group">
+                        <div>
+                            <label for="{{ form.full_name.id_for_label }}">ФИО:</label>
+                            {{ form.full_name }}
+                            {% if form.full_name.errors %}
+                            <div class="error">{{ form.full_name.errors }}</div>
+                            {% endif %}
+                        </div>
+
+                        <div>
+                            <label for="{{ form.role.id_for_label }}">Должность:</label>
+                            {{ form.role }}
+                            {% if form.role.errors %}
+                            <div class="error">{{ form.role.errors }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+
+                    <div class="frm-group">
+                        <div>
+                            <label for="{{ form.avatar.id_for_label }}">Аватар:</label>
+                            {{ form.avatar }}
+                            {% if form.avatar.errors %}
+                            <div class="error">{{ form.avatar.errors }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="frm-group">
+                        <div style="gap: 0 1rem; padding-top: 1rem" class="frm-group-button">
+                            <button class="btn-xm btn-primary" type="submit">
+                                <i style="margin-right: 0.5rem" class="fa-solid fa-floppy-disk">
+                                </i>Сохранить
+                            </button>
+                            {% if request.user.role == 'superadmin' and action == 'изменения' %}
+                            <a href="{% url 'admin:user-reset-password' pk=user.id %}" class="btn-xm btn-primary">
+                                Сбросить пароль
+                            </a>
+                            {% endif %}
+                            <a href="{% url 'admin:users' %}" class="btn-xm">
+                                <i style="margin-right: 0.5rem" class="fa-solid fa-xmark">
+                                </i>Отменить
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="chart">
+            <!-- График -->
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+
+
+
+<!-- ============================================================  -->
+<div>
+    <label for="{{ form.name.id_for_label }}">Название компании:</label>
+    {{ form.name }}
+    {% if form.name.errors %}
+    <div class="error">{{ form.name.errors }}</div>
+    {% endif %}
+</div>
+<div>
+    <label for="{{ form.contact_person.id_for_label }}">Контактное лицо:</label>
+    {{ form.contact_person }}
+    {% if form.contact_person.errors %}
+    <div class="error">{{ form.contact_person.errors }}</div>
+    {% endif %}
+</div>
+<!-- ============================================================  -->
+
+
 
 <!-- Форма редактирования -->
 <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form.as_p }}
-    <button type="submit" class="btn btn-primary">Сохранить</button>
-    <!-- Ссылка на сброс пароля -->
-    {% if request.user.role == 'superadmin' %}
-    <a href="{% url 'admin:user-reset-password' object.id %}" class="btn btn-primary">
-        Сбросить пароль
-    </a>
-    {% endif %}
-</form>
 
-<!--Подключаем стили-->
-<link rel="stylesheet" href="{% static 'css/admin.css' %}">
-{% endblock %}
+    <!-- Ссылка на сброс пароля -->
+
+</form>

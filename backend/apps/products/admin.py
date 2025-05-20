@@ -3,10 +3,14 @@ from .models import Product, Category
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ('name', 'category', 'unit', 'location', 'quantity', 'min_stock')
+    list_display = ('name', 'category', 'get_total_quantity', 'unit', 'location', 'quantity', 'min_stock')
     list_filter = ('category', 'unit')
     search_fields = ('name', 'category__name', 'location')
-    list_editable = ('quantity', 'min_stock')
+    list_editable = ('min_stock',)
+
+    @admin.display(description='Общее количество')
+    def get_total_quantity(self, obj):
+        return obj.quantity  # Вызываем свойство модели
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):

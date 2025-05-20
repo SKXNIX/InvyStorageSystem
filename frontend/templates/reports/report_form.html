@@ -1,56 +1,124 @@
-{% extends 'base.html' %}
+{% extends "master.html" %}
+{% load static %}
+
+
+{% block bar_content %}
+<div style="padding-top: 0px" class="page-header">
+    <h2>Форма генерации отчета</h2>
+    <p>Здесь вы можете настроить данные для отчета</p>
+</div>
+{% endblock %}
+
 
 {% block content %}
+<div style="max-width: max-content; max-height: min-content" class="card">
+    <div class="card-header">
+        <div class="card-title">Добавление поступления</div>
+    </div>
+    <div class="card-body">
+        <div class="frm">
+            <form method="post">
+                {% csrf_token %}
+                <div class="frm-grid">
+                    <div class="frm-group">
+                        <div>
+                            <label class="form-label">{{ form.report_type.label }}</label>
+                            {{ form.report_type }}
+                        </div>
+                        <div>
+                            <label class="form-label">{{ form.format.label }}</label>
+                            {{ form.format }}
+                        </div>
+                    </div>
+
+                    <div class="frm-group" id="date-fields" style="display: none;">
+                        <div>
+                            <label class="form-label">{{ form.start_date.label }}</label>
+                            {{ form.start_date }}
+                        </div>
+                        <div>
+                            <label class="form-label">{{ form.end_date.label }}</label>
+                            {{ form.end_date }}
+                        </div>
+                    </div>
+
+                    <div class="frm-group" id="product-field" style="display: none;">
+                        <div>
+                            <label class="form-label">{{ form.product.label }}</label>
+                            {{ form.product }}
+                        </div>
+                    </div>
+
+                    <div class="frm-group">
+                        <div style="padding-top: 1rem" class="frm-group-button">
+                            <button type="submit" class="btn-xm btn-primary">Сгенерировать</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    const reportType = document.getElementById('id_report_type');
+                    const dateFields = document.getElementById('date-fields');
+                    const productField = document.getElementById('product-field');
+
+                    function updateFields() {
+                        const type = reportType.value;
+
+                        // Показываем/скрываем блоки с датами и продуктом
+                        dateFields.style.display = ['operations', 'product_operations'].includes(type) ? 'flex' : 'none';
+                        productField.style.display = type === 'product_operations' ? 'flex' : 'none';
+                    }
+
+                    // Добавляем обработчик события и инициализируем
+                    if (reportType) {
+                        reportType.addEventListener('change', updateFields);
+                        updateFields(); // Инициализация при загрузке
+                    }
+                });
+            </script>
+
+        </div>
+        <div class="chart">
+            <!-- График -->
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+
+
 <div class="container mt-4">
     <h2>Генерация отчета</h2>
     <form method="post">
         {% csrf_token %}
-        
+
         <div class="row mb-3">
             <div class="col-md-6">
-                <label class="form-label">{{ form.report_type.label }}</label>
-                {{ form.report_type }}
+
             </div>
             <div class="col-md-6">
-                <label class="form-label">{{ form.format.label }}</label>
-                {{ form.format }}
+
             </div>
         </div>
-        
+
         <div id="date-fields" class="row mb-3" style="display: none;">
             <div class="col-md-6">
-                <label class="form-label">{{ form.start_date.label }}</label>
-                {{ form.start_date }}
+
             </div>
             <div class="col-md-6">
-                <label class="form-label">{{ form.end_date.label }}</label>
-                {{ form.end_date }}
+
             </div>
         </div>
-        
+
         <div id="product-field" class="mb-3" style="display: none;">
-            <label class="form-label">{{ form.product.label }}</label>
-            {{ form.product }}
+
         </div>
-        
-        <button type="submit" class="btn btn-primary">Сгенерировать</button>
+
+       
     </form>
 </div>
 
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const reportType = document.getElementById('id_report_type');
-    const dateFields = document.getElementById('date-fields');
-    const productField = document.getElementById('product-field');
-    
-    function updateFields() {
-        const type = reportType.value;
-        dateFields.style.display = ['operations', 'product_operations'].includes(type) ? 'flex' : 'none';
-        productField.style.display = type === 'product_operations' ? 'block' : 'none';
-    }
-    
-    reportType.addEventListener('change', updateFields);
-    updateFields(); // Инициализация при загрузке
-});
-</script>
-{% endblock %}
+

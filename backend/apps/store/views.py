@@ -1,10 +1,12 @@
 ﻿from math import e
+from django.db.models import Q
 from django.contrib import messages
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.views.generic import FormView, ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
 
 from apps.custom_auth.models import CustomUser
 from apps.core.mixins import RoleRequiredMixin
@@ -87,24 +89,75 @@ class DeleteSelectedReceiptsView(RoleRequiredMixin, FormView):
             messages.success(request, "Выбранные поступления удалены")
         else:
             messages.warning(request, "Нет выбранных поступлений")
-        return HttpResponseRedirect(reverse_lazy('store:receipts-list'))
+        return HttpResponseRedirect(reverse_lazy('store:store-settings'))
 
 
 @login_required
-@role_required(['superadmin','admin','storekeeper'])
+@role_required(['superadmin', 'admin', 'storekeeper'])
 def store_page(request):
-    """"""
-    return render(request, 'store/index.html')
+    search = request.GET.get('search', '')
+    availability = request.GET.get('availability', 'all')
+    
+    # Фильтрация поступлений (StockReceipt)
+    receipts_list = StockReceipt.objects.all()
+    if search:
+        receipts_list = receipts_list.filter(
+            Q(product__name__icontains=search) |
+            Q(invoice_number__icontains=search) |
+            Q(supplier__name__icontains=search) |
+            Q(comment__icontains=search)
+        )
+    
+    # Фильтрация отгрузок (Dispatch)
+    dispatches_list = Dispatch.objects.all()
+    if search:
+        dispatches_list = dispatches_list.filter(
+            Q(product__name__icontains=search) |
+            Q(invoice_number__icontains=search) |
+            Q(recipient__icontains=search) |
+            Q(comment__icontains=search)
+        )
+    
+    # Фильтр по типу операции (availability)
+    if availability == 'available':  # Показать только приходы
+        dispatches_list = Dispatch.objects.none()
+    elif availability == 'out_of_stock':  # Показать только отгрузки
+        receipts_list = StockReceipt.objects.none()
+    
+    # Пагинация
+    paginator_r = Paginator(receipts_list.order_by('-receipt_date'), 20)
+    paginator_d = Paginator(dispatches_list.order_by('-dispatch_date'), 20)
+    
+    page_r = request.GET.get('page_r')
+    page_d = request.GET.get('page_d')
+    
+    receipts = paginator_r.get_page(page_r)
+    dispatches = paginator_d.get_page(page_d)
+    
+    context = {
+        'receipts': receipts,
+        'dispatches': dispatches,
+        'search': search,
+        'selected_availability': availability,
+    }
+    return render(request, 'store/index.html', context)
+
 
 @login_required
 @role_required(['superadmin', 'admin','storekeeper'])
 def add_stock_receipt(request):
     if request.method == 'POST':
-        form = StockReceiptForm(request.POST, user=request.user)  # Передаем user в форму
+        form = StockReceiptForm(request.POST, user=request.user)  
         if form.is_valid():
-            receipt = form.save()  # Теперь save() не принимает user
-            messages.success(request, f'Поступление #{receipt.id} успешно добавлено')
-            return redirect('store:receipts-list')
+            try:
+                receipt = form.save(commit=False)
+                receipt.save() 
+                messages.success(request, "Приход успешно добавлен!")
+                return redirect('store:store-settings')  
+            except Exception as e:
+                messages.error(request, f"Ошибка: {str(e)}")
+        else:
+            messages.error(request, "Исправьте ошибки в форме")
     else:
         form = StockReceiptForm(user=request.user)
     
@@ -114,7 +167,7 @@ def add_stock_receipt(request):
 class ReceiptListView(RoleRequiredMixin, ListView):
     """Представление: список поступлений"""
     model = StockReceipt
-    template_name = 'store/receipt_list.html'
+    template_name = 'store/index.html'
     allowed_roles = ['superadmin', 'admin','storekeeper']
     context_object_name = 'receipts'
 
@@ -161,6 +214,8 @@ def update_receipt_status(request, pk):
 
 
 
+
+
 class SupplierListView(RoleRequiredMixin, ListView):
     """Представление: список поставщиков"""
     model = Supplier
@@ -170,8 +225,18 @@ class SupplierListView(RoleRequiredMixin, ListView):
 
     def get_queryset(self):
         queryset = super().get_queryset()
+        search = self.request.GET.get('search', '')  # Получаем параметр поиска
         sort_by = self.request.GET.get('sort_by', 'id')
         order = self.request.GET.get('order', 'asc')
+
+        # Фильтрация по поисковому запросу
+        if search:
+            queryset = queryset.filter(
+                Q(name__icontains=search) |
+                Q(contact_person__icontains=search) |
+                Q(email__icontains=search) |
+                Q(phone__icontains=search)
+            )
 
         if order == 'desc':
             sort_by = '-' + sort_by
@@ -181,17 +246,25 @@ class SupplierListView(RoleRequiredMixin, ListView):
         context = super().get_context_data(**kwargs)
         context['sort_by'] = self.request.GET.get('sort_by', 'id')
         context['order'] = self.request.GET.get('order', 'asc')
+        context['search'] = self.request.GET.get('search', '')  # Добавляем search в контекст
         return context
 
 @login_required
 @role_required(['superadmin', 'admin'])
 def add_supplier(request):
     if request.method == 'POST':
+        messages.info(request, "1")
         form = SupplierForm(request.POST)
+        messages.info(request, "2")
         if form.is_valid():
+            messages.info(request, "3")
             form.save()
+            messages.info(request, "4")
             return redirect('store:suppliers-list')
+        else:
+            messages.info(request, "5")
     else:
+        messages.info(request, "6")
         form = SupplierForm(request.POST)
     
     return render(request, 'store/supplier_form.html', {'form': form})
@@ -208,15 +281,18 @@ def update_supplier(request, pk):
 @role_required(['superadmin', 'admin', 'storekeeper'])
 def add_dispatch(request):
     if request.method == 'POST':
-        form = StockDispatchForm(request.POST)
+        form = StockDispatchForm(request.POST, user=request.user)  # Добавьте user
         if form.is_valid():
             try:
-                form.save()
-                return redirect('store:dispatch-list')
+                dispatch = form.save(commit=False)
+                dispatch.save(user=request.user)  # Сохраняем с пользователем
+                messages.success(request, "Расход успешно добавлен!")
+                return redirect('store:store-settings')  # Перенаправляем на список
             except ValueError as e:
                 form.add_error(None, str(e))
+                messages.error(request, str(e))
     else:
-        form = StockDispatchForm()
+        form = StockDispatchForm(user=request.user)
 
     return render(request, 'store/add_dispatch.html', {'form': form})
 
@@ -225,7 +301,7 @@ def add_dispatch(request):
 class DispatchListView(RoleRequiredMixin, ListView):
     """Представление: список отгрузок"""
     model = Dispatch
-    template_name = 'store/dispatch_list.html'
+    template_name = 'store/index.html'
     allowed_roles = ['superadmin', 'admin','storekeeper']
     context_object_name = 'dispatches'
 
@@ -249,7 +325,7 @@ class DispatchListView(RoleRequiredMixin, ListView):
 @role_required(['superadmin', 'admin', 'storekeeper'])
 def dispatch_list(request):
     dispatches = Dispatch.objects.all().order_by('-dispatch_date')
-    return render(request, 'store/dispatch_list.html', {'dispatches': dispatches})
+    return render(request, 'store/index.html', {'dispatches': dispatches})
 
 
 @login_required
@@ -269,7 +345,7 @@ def update_dispatch_status(request, pk):
                         return render(request, 'store/update_dispatch_status.html', 
                                       {'form': form, 'dispatch': dispatch})
                 form.save()
-                return redirect('store:dispatch-list')
+                return redirect('store:store-settings')
             except ValueError as e:
                 messages.error(request, str(e))
         else:
@@ -282,7 +358,7 @@ def update_dispatch_status(request, pk):
 @role_required(['superadmin', 'admin', 'storekeeper'])
 def store_list(request):
     stores = Store.objects.all().order_by('product__name')
-    return render(request, 'store/store_list.html', {'stores': stores})
+    return render(request, 'store/index.html', {'stores': stores})
 
 
 class DeleteSelectedDispatchesView(RoleRequiredMixin, FormView):
@@ -296,7 +372,7 @@ class DeleteSelectedDispatchesView(RoleRequiredMixin, FormView):
             messages.success(request, "Выбранные отгрузки удалены")
         else:
             messages.warning(request, "Нет выбранных отгрузок")
-        return HttpResponseRedirect(reverse_lazy('store:dispatch-list'))
+        return HttpResponseRedirect(reverse_lazy('store:store-settings'))
 
 
 class DeleteSelectedSuppliersView(RoleRequiredMixin, FormView):
@@ -314,7 +390,7 @@ class DeleteSelectedSuppliersView(RoleRequiredMixin, FormView):
                 return HttpResponseRedirect(reverse_lazy('store:suppliers-list'))
         else:
             messages.warning(request, "Нет выбранных поставщиков")
-        return HttpResponseRedirect(reverse_lazy('store:suppliers-list'))\
+        return HttpResponseRedirect(reverse_lazy('store:suppliers-list'))
 
 
 class SupplierDetailView(RoleRequiredMixin, DetailView):
@@ -332,3 +408,9 @@ class SupplierUpdateView(RoleRequiredMixin, UpdateView):
     success_url = '/store/suppliers-list/'
     context_object_name = 'supplier'
     pk_url_kwarg = 'pk'
+
+class SupplierDeleteView(RoleRequiredMixin, DeleteView):
+    model = Supplier
+    allowed_roles = ['superadmin', 'admin']
+    template_name = 'store/supplier_confirm_delete.html'
+    success_url = '/store/suppliers-list/'

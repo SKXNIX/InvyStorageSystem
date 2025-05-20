@@ -1,14 +1,44 @@
-{% extends "base.html" %}
+{% extends "master.html" %}
+{% load static %}
+
+
+{% block bar_content %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css ">
+<div style="padding-top: 0px" class="page-header">
+    <h2>Форма {% if form.instance.pk %}редактирования{% else %}добавления{% endif %} категории</h2>
+    <p>Здесь вы можете {% if form.instance.pk %}редактировать{% else %}добавлять{% endif %} категории</p>
+</div>
+{% endblock %}
+
 
 {% block content %}
-<h2>{% if form.instance.pk %}Редактирование{% else %}Добавление{% endif %} категории</h2>
-<form method="post">
-    {% csrf_token %}
-    <div class="form-group">
-        <label>Название:</label>
-        {{ form.name }}
+<div style="max-width: max-content; max-height: min-content" class="card">
+    <div class="card-header">
+        <div class="card-title">{% if form.instance.pk %}Редактирование{% else %}Добавление{% endif %} категории</div>
     </div>
-    <button type="submit" class="btn btn-primary">Сохранить</button>
-    <a href="{% url 'products:category_list' %}" class="btn btn-secondary">Отмена</a>
-</form>
+    <div class="card-body">
+        <div class="frm">
+            <form method="post">
+                {% csrf_token %}
+                <div style="grid-template-columns: 1fr;" class="frm-grid">
+                    <div class="frm-group">
+                        <div>
+                            <label>Название:</label>
+                            {{ form.name }}
+                        </div>
+                        <div style="gap: 1rem; padding-top: 0.5rem" class="frm-group-button">
+                            <button class="btn-xm btn-primary" type="submit"><i style="margin-right: 0.5rem" class="fa-solid fa-floppy-disk">
+                            </i>Сохранить</button>
+                            <a href="{% url 'products:category_list' %}" class="btn-xm"><i style="margin-right: 0.5rem" class="fa-solid fa-xmark">
+                            </i>Отменить</a>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="chart">
+            <!-- График -->
+        </div>
+    </div>
+</div>
 {% endblock %}

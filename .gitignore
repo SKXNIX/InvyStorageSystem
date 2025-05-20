@@ -7,5 +7,6 @@ db.sqlite3
 /static
 .DS_Store
 .vs/
-__pycache__/
-/.vs/slnx.sqlite
+".vs/slnx.sqlite" 
+".vs/" 
+

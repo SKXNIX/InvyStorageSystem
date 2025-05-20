@@ -1,14 +1,16 @@
 import csv
+from decimal import Decimal
+from django.db.models.functions import Coalesce
 import pandas as pd
 from django.http import HttpResponse
 from apps.store.models import Store, StockReceipt, Dispatch
 from apps.products.models import Product
-from django.db.models import F
+from django.db.models import F, DecimalField, Sum
 
 def generate_current_stock():
     # Получаем данные из модели Product
     queryset = Product.objects.select_related('category').annotate(
-        current_quantity=F('quantity')
+        current_quantity=Coalesce(Sum('store__quantity'), Decimal('0.00'), output_field=DecimalField())
     ).order_by('name')
     
     # Создаем HTTP ответ
@@ -34,7 +36,7 @@ def generate_current_stock():
         writer.writerow([
             product.name,
             product.category.name,
-            product.quantity,
+            product.current_quantity,
             product.unit,
             product.location,
             product.min_stock
@@ -43,7 +45,9 @@ def generate_current_stock():
     return response
 
 def generate_low_stock():
-    queryset = Product.objects.filter(quantity__lte=F('min_stock'))
+    queryset = Product.objects.annotate(
+        current_quantity=Coalesce(Sum('store__quantity'), Decimal('0.00'), output_field=DecimalField())
+    ).filter(current_quantity__lte=F('min_stock'))
     
     response = HttpResponse(
         content_type='text/csv; charset=utf-8-sig',
@@ -61,9 +65,9 @@ def generate_low_stock():
         writer.writerow([
             product.name,
             product.category.name,
-            str(product.quantity),
+            str(product.current_quantity),
             str(product.min_stock),
-            str(product.quantity - product.min_stock),
+            str(product.current_quantity - product.min_stock),
             product.unit
         ])
     
