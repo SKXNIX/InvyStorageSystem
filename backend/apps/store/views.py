@@ -1,4 +1,5 @@
 ﻿from math import e
+from django.db.models import Q
 from django.contrib import messages
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect, render
@@ -183,6 +184,8 @@ def update_receipt_status(request, pk):
 
 
 
+
+
 class SupplierListView(RoleRequiredMixin, ListView):
     """Представление: список поставщиков"""
     model = Supplier
@@ -192,8 +195,18 @@ class SupplierListView(RoleRequiredMixin, ListView):
 
     def get_queryset(self):
         queryset = super().get_queryset()
+        search = self.request.GET.get('search', '')  # Получаем параметр поиска
         sort_by = self.request.GET.get('sort_by', 'id')
         order = self.request.GET.get('order', 'asc')
+
+        # Фильтрация по поисковому запросу
+        if search:
+            queryset = queryset.filter(
+                Q(name__icontains=search) |
+                Q(contact_person__icontains=search) |
+                Q(email__icontains=search) |
+                Q(phone__icontains=search)
+            )
 
         if order == 'desc':
             sort_by = '-' + sort_by
@@ -203,6 +216,7 @@ class SupplierListView(RoleRequiredMixin, ListView):
         context = super().get_context_data(**kwargs)
         context['sort_by'] = self.request.GET.get('sort_by', 'id')
         context['order'] = self.request.GET.get('order', 'asc')
+        context['search'] = self.request.GET.get('search', '')  # Добавляем search в контекст
         return context
 
 @login_required
